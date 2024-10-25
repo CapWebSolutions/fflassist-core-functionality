@@ -200,6 +200,8 @@ add_action( 'woocommerce_account_access-ffl-assist_endpoint', __NAMESPACE__ . '\
 // Note: add_action must follow 'woocommerce_account_{your-endpoint-slug}_endpoint' format
 
 
+/* ======================================================================================================== */
+/* https://www.businessbloomer.com/woocommerce-separate-login-registration/ */
 /**
  * @snippet       WooCommerce User Registration Shortcode
  * @how-to        businessbloomer.com/woocommerce-customization
@@ -250,6 +252,7 @@ add_action( 'woocommerce_account_access-ffl-assist_endpoint', __NAMESPACE__ . '\
  * @author        Rodolfo Melogli, Business Bloomer
  * @compatible    WooCommerce 9
  * @community     https://businessbloomer.com/club/
+ * @description   Optionally Redirect Login & Registration Pages to My Account Page If Customer Is Logged In
  */
  
 add_action( 'template_redirect',  __NAMESPACE__ . '\bbloomer_redirect_login_registration_if_logged_in' );
