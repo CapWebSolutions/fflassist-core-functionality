@@ -29,7 +29,7 @@ function login_logo() {
     // $default_image_theme = trailingslashit(CORE_FUNCTIONALITY_THEME_URI) .'assets/images/site-login-logo.png';
 
     // This background is from the media library. 
-    $default_image_media_library = '/wp-content/uploads/2024/02/generic-swirled-background-1900x900-1.jpg';
+    $default_image_media_library = '/wp-content/uploads/2024/10/stock-vector-gun-and-ammunition-shop-retro-poster-weapon-for-self-defense-ammo-for-shooting-range-training-1914164248.jpg';
 
     //Set preferred logo image and background image
     $default_image = $default_image_plugin_svg;
@@ -58,7 +58,7 @@ function login_logo() {
         }
         .login form {
             border-radius: 10px;
-            background-color: #99CCFF !important;
+            background-color: #29A632 !important;
         }
     </style>
 	<?php 
