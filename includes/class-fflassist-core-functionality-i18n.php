@@ -35,7 +35,7 @@ class Fflassist_Core_Functionality_i18n {
 	public function load_plugin_textdomain() {
 
 		load_plugin_textdomain(
-			'xxx-core-functionality',
+			'fflassist-core-functionality',
 			false,
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);

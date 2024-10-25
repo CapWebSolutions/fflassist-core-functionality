@@ -14,7 +14,7 @@
  *
  * @wordpress-plugin
  * Plugin Name:       FFLAssist Core Functionality
- * Plugin URI:        http://github.com/CapWebSolutions/xxx-core-functionality.git/
+ * Plugin URI:        http://github.com/CapWebSolutions/fflassist-core-functionality.git/
  * Description:       This plugin contains all of the site specific functions needed to support FFL-Assist.com.
  * Version:           1.0.0
  * Author:            Cap Web Solutions | Matt Ryan
@@ -83,3 +83,5 @@ function run_fflassist_core_functionality() {
 
 }
 run_fflassist_core_functionality();
+
+

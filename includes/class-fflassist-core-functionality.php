@@ -72,7 +72,7 @@ class Fflassist_Core_Functionality {
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->fflassist_core_functionality = 'xxx-core-functionality';
+		$this->fflassist_core_functionality = 'fflassist-core-functionality';
 
 		$this->load_dependencies();
 		$this->set_locale();

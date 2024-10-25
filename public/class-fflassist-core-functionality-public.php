@@ -73,7 +73,7 @@ class Fflassist_Core_Functionality_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->fflassist_core_functionality, plugin_dir_url( __FILE__ ) . 'css/xxx-core-functionality-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->fflassist_core_functionality, plugin_dir_url( __FILE__ ) . 'css/fflassist-core-functionality-public.css', array(), $this->version, 'all' );
 
 	}
 
@@ -96,7 +96,7 @@ class Fflassist_Core_Functionality_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->fflassist_core_functionality, plugin_dir_url( __FILE__ ) . 'js/xxx-core-functionality-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->fflassist_core_functionality, plugin_dir_url( __FILE__ ) . 'js/fflassist-core-functionality-public.js', array( 'jquery' ), $this->version, false );
 
 	}
 
