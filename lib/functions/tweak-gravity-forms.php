@@ -41,23 +41,3 @@ function turn_off_gravity_forms_admin_notice() {
     }
 }
 
-// http://www.gravityhelp.com/forums/topic/database-look-up-validation
-// validate 9 digit code 
-// For Form ID 1
-add_filter('gform_validation_1',   __NAMESPACE__ . '\validate_code');
-function validate_code($validation_result){
-
-    // validate field 8
-    if( !is_ffl_code_valid( $_POST['input_8']  ) ){
-        $validation_result['is_valid'] = false;
-        foreach($validation_result['form']['fields'] as &$field){
-        // field 8 is the field we are validating  
-            if($field['id'] == 8){
-                $field['failed_validation'] = true;
-                $field['validation_message'] = 'The license number you entered is not found. Please try again.';
-                break;
-            }
-        }
-    }
-    return $validation_result;
-}
