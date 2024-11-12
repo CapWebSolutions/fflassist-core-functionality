@@ -62,7 +62,8 @@ function bbloomer_remove_metaboxes_edit_product() {
  */
   
 //  add_action( 'woocommerce_before_order_notes',  __NAMESPACE__ . '\bbloomer_add_custom_checkout_field' );
- add_action( 'woocommerce_after_checkout_billing_form',  __NAMESPACE__ . '\bbloomer_add_custom_checkout_field' );
+// add_action( 'woocommerce_after_checkout_billing_form',  __NAMESPACE__ . '\bbloomer_add_custom_checkout_field' );
+add_action( 'woocommerce_before_checkout_billing_form',  __NAMESPACE__ . '\bbloomer_add_custom_checkout_field' );
   
  function bbloomer_add_custom_checkout_field( $checkout ) { 
     $current_user = wp_get_current_user();
@@ -263,3 +264,118 @@ function bbloomer_redirect_login_registration_if_logged_in() {
         exit;
     }
 }
+
+/**
+ * @snippet       Remove Coupon Form @ WooCommerce Cart 
+ *                This removes UI AND functionality. 
+ */
+function disable_coupon_field_on_checkout( $enabled ) {
+   if ( is_checkout() ) {
+      $enabled = false;
+   }
+   return $enabled;
+   }
+add_filter( 'woocommerce_coupons_enabled', __NAMESPACE__ . '\disable_coupon_field_on_checkout' );
+
+/**
+ * @snippet       Display Coupon Form @ WooCommerce Checkout (Bottom)
+ */
+ 
+add_action( 'woocommerce_review_order_after_submit', __NAMESPACE__ . '\bbloomer_checkout_coupon_below_payment_button' );
+function bbloomer_checkout_coupon_below_payment_button() {
+   echo '<hr>';
+   woocommerce_checkout_coupon_form();
+}
+
+/**
+ * @snippet       Apply WooCommerce Coupon On Link Click
+ * 
+ */
+ 
+ // 1) Need to decide the URL parameter you want to use. 
+ //    In the snippet below I use “qcode”. 
+ //    The URL will need to contain the parameter in order to apply the coupon: 
+ //    example.com/?code=xyz
+ // 2) Need to create a coupon <coupon_code> before adding it to the URL! 
+ //    Consider whether you want a random code, or something prettier. 
+ //    Once you create the coupon, check the “Individual use only” checkbox 
+ //    in the coupon usage restriction settings 
+ //    (“Check this box if the coupon cannot be used in conjunction with other coupons“) 
+ //    if you don’t want people to add multiple coupons to cart with different URLs
+ // 
+ add_action( 'wp_loaded', __NAMESPACE__ . '\bbloomer_add_coupon_to_session' );
+ 
+ function bbloomer_add_coupon_to_session() {  
+    if ( empty( $_GET['qcode'] ) ) return;
+    if ( ! WC()->session || ( WC()->session && ! WC()->session->has_session() ) ) {
+       WC()->session->set_customer_session_cookie( true );
+    }
+    $coupon_code = esc_attr( $_GET['qcode'] );
+    WC()->session->set( 'coupon_code', $coupon_code );
+    if ( WC()->cart && ! WC()->cart->has_discount( $coupon_code ) ) {
+       WC()->cart->calculate_totals();
+       WC()->cart->add_discount( $coupon_code );
+       WC()->session->__unset( 'coupon_code' );
+    }
+ }
+  
+add_action( 'woocommerce_add_to_cart', __NAMESPACE__ . '\bbloomer_add_coupon_to_cart' );
+  
+ function bbloomer_add_coupon_to_cart() {
+    $coupon_code = WC()->session ? WC()->session->get( 'coupon_code' ) : false;
+    if ( ! $coupon_code || empty( $coupon_code ) ) return;
+    if ( WC()->cart && ! WC()->cart->has_discount( $coupon_code ) ) {
+       WC()->cart->calculate_totals();
+       WC()->cart->add_discount( $coupon_code );
+       WC()->session->__unset( 'coupon_code' );
+    }
+ }
+ 
+
+ /**
+ * @snippet       Show CF7 Form @ WooCommerce Single Product
+ * @how-to        businessbloomer.com/woocommerce-customization
+ * @author        Rodolfo Melogli, Business Bloomer
+ * @compatible    WooCommerce 5
+ * @community     https://businessbloomer.com/club/
+ */
+  
+add_action( 'woocommerce_after_add_to_cart_form', __NAMESPACE__ . '\bbloomer_woocommerce_gf_single_product', 30 );
+  
+function bbloomer_woocommerce_gf_single_product() {
+   global $product;
+   if (is_product() && $product->get_id() == 2127) {
+
+      echo '<button type="submit" id="trigger_gf" class="single_add_to_cart_button button alt">Product Inquiry</button>';
+      echo '<div id="product_inq" style="display:none">';
+      echo do_shortcode('[gravityform id="5" title="true"]');
+      echo '</div>';
+      wc_enqueue_js( "
+         $('#trigger_gf').on('click', function(){
+            if ( $(this).text() == 'Product Inquiry' ) {
+               $('#product_inq').css('display','block');
+               $('input[name=\'your-subject\']').val('" . get_the_title() . "');
+               $('#trigger_gf').html('Close');
+            } else {
+               $('#product_inq').hide();
+               $('#trigger_gf').html('Product Inquiry');
+            }
+         });
+      " );
+   }
+}
+
+/**
+ * @snippet       Hide Fields if Virtual @ WooCommerce Checkout
+ * @how-to        businessbloomer.com/woocommerce-customization
+ * @author        Rodolfo Melogli, Business Bloomer
+ * @compatible    WooCommerce 8
+ * @community     https://businessbloomer.com/club/
+ */
+ 
+ add_filter( 'woocommerce_checkout_fields', __NAMESPACE__ . '\remove_checkout_fields' );
+  
+ function remove_checkout_fields( $fields ) {
+   unset($fields['billing']['billing_country']);
+   return $fields;
+ }
