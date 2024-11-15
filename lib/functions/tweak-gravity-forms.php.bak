@@ -19,9 +19,6 @@ namespace capweb;
 if ( is_plugin_active( 'gravityforms/gravityforms.php' ) ) {
     // Turn_off_gravity_forms_admin_notice
     add_action(	'gform_loaded', __NAMESPACE__ . '\turn_off_gravity_forms_admin_notice');
-
-    // Add validation for form 1
-    add_filter('gform_validation_1',   __NAMESPACE__ . '\validate_wp_user_id_field');
 }
 
 /**
@@ -44,39 +41,3 @@ function turn_off_gravity_forms_admin_notice() {
     }
 }
 
-
-function validate_wp_user_id_field( $validation_result ){
-    // 
-    // validate that entry is an existing WP User ID 
-    // For Form ID 6 - validate field 1
-    //
-        if( !is_wp_user_id_valid( $_POST['input_1']  ) ){
-            $validation_result['is_valid'] = false;
-            foreach($validation_result['form']['fields'] as &$field){
-            // field 1 is the field we are validating  
-                if($field['id'] == 1){
-                    $field['failed_validation'] = true;
-                    $field['validation_message'] = 'The user ID is not valid. Please try again.';
-                    break;
-                }
-            }
-        }
-        return $validation_result;
-    }
-
-    function is_wp_user_id_valid( $user ) {
-        global $wpdb;
-    
-        // Prepare the SQL statement
-        $query = $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->users WHERE ID = %d", $user, $user );
-
-        // Execute the query
-        $result = $wpdb->get_row($query, ARRAY_A);
-
-        // Check if a result was found
-        if ( $result ) {
-            return $result;
-        } else {
-            return false;
-        }
-    }
