@@ -87,4 +87,3 @@ function include_core_functionality_inc_files() {
 	}
 }
 include_core_functionality_inc_files();
-
