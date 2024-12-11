@@ -127,7 +127,7 @@ function update_quick_links_menu( $bc_meta ) {
 }
 
 // Call the function
-get_ffl_assist_custom_bc_meta();
+// get_ffl_assist_custom_bc_meta();
 get_ffl_assist_custom_bc_meta( $user_id, $bc_meta );
 
 /**
@@ -150,11 +150,11 @@ function call_update_quick_links_menu_on_login($user_login, $user) {
         }
     }
 }
-add_action('wp_login', 'call_update_quick_links_menu_on_login', 10, 2);
+add_action('wp_login', __NAMESPACE__ . '\call_update_quick_links_menu_on_login', 10, 2);
 
 function reset_quick_links_menu_flag($user_id) {
     // Reset the flag when the user logs out
     delete_user_meta($user_id, 'quick_links_menu_updated');
 }
-add_action('wp_logout', 'reset_quick_links_menu_flag');
+add_action('wp_logout', __NAMESPACE__ . '\reset_quick_links_menu_flag');
 
