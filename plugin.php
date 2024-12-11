@@ -3,7 +3,7 @@
  * Plugin Name: FFLAssist Core Functionality
  * Plugin URI: https://github.com/CapWebSolutions/fflassist-core-functionality
  * Description: This contains core functionality for FFLAssist so that it is theme independent. It should remain activated.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: Cap Web Solutions
  * Author URI: https://capwebsolutions.com
  * GitHub Plugin URI: https://github.com/CapWebSolutions/fflassist-core-functionality
@@ -30,7 +30,7 @@ define( 'CORE_FUNCTIONALITY_PLUGIN_DIR', plugin_dir_path( __FILE__ ) ); //locati
 define( 'CORE_FUNCTIONALITY_PLUGIN_URI', plugin_dir_url( __FILE__ ) );  //location of plugin folder in wp-content
 define( 'CORE_FUNCTIONALITY_THEME_DIR', get_stylesheet_directory() );   // Used in checking location of logo file
 define( 'CORE_FUNCTIONALITY_THEME_URI', get_stylesheet_directory_uri() );   // Used in checking location of logo file
-define( 'CORE_FUNCTIONALITY_PLUGIN_VERSION', get_plugin_data(__FILE__ )['Version'] ); 
+// define( 'CORE_FUNCTIONALITY_PLUGIN_VERSION', get_plugin_data(__FILE__ )['Version'] ); 
 
 /**
  * Enqueue Needed Scripts & styles
