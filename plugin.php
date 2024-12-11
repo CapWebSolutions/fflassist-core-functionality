@@ -19,18 +19,18 @@
 
 namespace capweb;
 
-if ( is_admin() ) {
-	if( ! function_exists('get_plugin_data') ){
-		require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-	}
-}
+// if ( is_admin() ) {
+// 	if( ! function_exists('get_plugin_data') ){
+// 		require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+// 	}
+// }
 
 // Define needed constants
 define( 'CORE_FUNCTIONALITY_PLUGIN_DIR', plugin_dir_path( __FILE__ ) ); //location of plugin folder on disk
 define( 'CORE_FUNCTIONALITY_PLUGIN_URI', plugin_dir_url( __FILE__ ) );  //location of plugin folder in wp-content
 define( 'CORE_FUNCTIONALITY_THEME_DIR', get_stylesheet_directory() );   // Used in checking location of logo file
 define( 'CORE_FUNCTIONALITY_THEME_URI', get_stylesheet_directory_uri() );   // Used in checking location of logo file
-define( 'CORE_FUNCTIONALITY_PLUGIN_VERSION',get_plugin_data(__FILE__ )['Version'] ); 
+define( 'CORE_FUNCTIONALITY_PLUGIN_VERSION', get_plugin_data(__FILE__ )['Version'] ); 
 
 /**
  * Enqueue Needed Scripts & styles
@@ -51,11 +51,6 @@ function enqueue_core_scripts_and_styles() {
 		CORE_FUNCTIONALITY_PLUGIN_VERSION, 
 		'all' 
 	);
-	// wp_enqueue_script( 
-	// 	'core-functionality', 
-	// 	trailingslashit( plugins_url('assets', __FILE__) ) . 'js/core-functionality.js' 
-	// );
-
 }
 add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_core_scripts_and_styles' );
 
@@ -78,11 +73,9 @@ function include_core_functionality_inc_files() {
 		if ( is_dir( $include ) ) {
 			foreach ( glob( $include . '*.php' ) as $file ) {
 				require $file;  // all php files from directory
-				// error_log( '$file ' . var_export( $file, true ) );
 			}
 		} else {
 			require $include;    // single php file
-			// error_log( '$include ' . var_export( $include, true ) );
 		}
 	}
 }

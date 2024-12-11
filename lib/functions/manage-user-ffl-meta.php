@@ -16,60 +16,39 @@ namespace capweb;
 function get_ffl_assist_custom_bc_meta( $user_id ) {
 
 	// Set user to current one if id not provided.
-	if ( !$user_id ) $user_id = wp_get_current_user();
+	if ( !$user_id ) $user_id = get_current_user_id();
 
 	// Set dummy return values
 	$bc_meta = [];
-	$bc_meta['bc_user_id'] = 'user-id' . $user_id;
-	$bc_meta['bc_tenant_id'] = 'tenant-id';
-	$bc_meta['bc_database'] = 'bc-database';
-	$bc_meta['bc_logon_url'] = 'bc-logon-url';
-
-	$result = rwmb_meta( 'bc_user_id', [ 'object_type' => 'user' ], $user_id );
-	$result .= '||';
-	$result = rwmb_meta( 'bc_tenant_id', [ 'object_type' => 'user' ], $user_id );
-	$result .= '||';
-	$result = rwmb_meta( 'bc_database', [ 'object_type' => 'user' ], $user_id );
-	$result .= '||';
-	$result = rwmb_meta( 'bc_logon_url', [ 'object_type' => 'user' ], $user_id );
-	
-	return $result;
-}
-
-function create_nav_item( $bc_meta ) {
-
-	// We need to add this custom entry to x different nav menu locations
-	//  header account link
-	//  footer Quick Link | FFL Assist System
-
-	// Check if the menu exists
-	$menu_name   = 'Quick Links';
-	$menu_exists = wp_get_nav_menu_object( $menu_name );
-
-	// If it doesn't exist, let's exit with code 'QL0'.
-	if ( ! $menu_exists ) return 'QL0';
-	
-	// Menu does exist, find 'FFL Assist System' nav item
-	{
-		$menu_id = wp_create_nav_menu($menu_name);
-
-		// Set up default menu items
-		wp_update_nav_menu_item( $menu_id, 0, array(
-			'menu-item-title'   =>  __( 'Home', 'textdomain' ),
-			'menu-item-classes' => 'home',
-			'menu-item-url'     => home_url( '/' ), 
-			'menu-item-status'  => 'publish'
-		) );
-
-		wp_update_nav_menu_item( $menu_id, 0, array(
-			'menu-item-title'  =>  __( 'Custom Page', 'textdomain' ),
-			'menu-item-url'    => home_url( '/custom/' ), 
-			'menu-item-status' => 'publish'
-		) );
+	$bc_meta['bc_user_id']   = rwmb_meta( 'bc_user_id', [ 'object_type' => 'user' ], get_current_user_id() );
+	$bc_meta['bc_tenant_id'] = rwmb_meta( 'bc_tenant_id', [ 'object_type' => 'user' ], get_current_user_id() );
+	$bc_meta['bc_database']  = rwmb_meta( 'bc_database', [ 'object_type' => 'user' ], get_current_user_id() );
+	$bc_meta['bc_logon_url'] = rwmb_meta( 'bc_logon_url', [ 'object_type' => 'user' ], get_current_user_id() );
+	if ( strlen( $bc_meta['bc_logon_url'] ) < 20 ) {
+		// Set to default 
+		$bc_meta['bc_logon_url'] = site_url( '/membership-account/system-status/', 'https:');
 	}
+
+	// $result = rwmb_meta( 'bc_user_id', [ 'object_type' => 'user' ], get_current_user_id() );
+	// $result .= '|';
+	// $result = rwmb_the_value( 'bc_tenant_id', [ 'object_type' => 'user' ], get_current_user_id() );
+	// $result .= '|';
+	// $result = rwmb_meta( 'bc_database', [ 'object_type' => 'user' ], get_current_user_id() );
+	// $result .= '|';
+	// $result = rwmb_meta( 'bc_logon_url', [ 'object_type' => 'user' ], get_current_user_id() );
+	error_log( print_r( (object)
+		[
+			'file' => __FILE__,
+			'method' => __METHOD__,
+			'line' => __LINE__,
+			'dump' => [
+				$bc_meta,
+			],
+		], true ) );
+	return $bc_meta;
 }
 
-function update_quick_links_menu( $bc_meta ) {
+function update_quick_links_menu( $user_id ) {
 		// Get the menu object by name
     $menu_name = 'Quick Links';
     $menu = wp_get_nav_menu_object($menu_name);
@@ -79,50 +58,45 @@ function update_quick_links_menu( $bc_meta ) {
         return 'QL0';
     }
 
+	// Get all the meta for current user and set the personal logon URL. 
+	$bc_meta = get_ffl_assist_custom_bc_meta( $user_id );
+	$url_full = $bc_meta['bc_logon_url'];
+
     // Get the menu items
     $menu_items = wp_get_nav_menu_items($menu->term_id);
-	// var_dump($menu_items);
-	do_action( 'qm/alert', 'Menu Items ' . $menu_items );
+
     // Initialize a flag to check if 'FFL Assist' is found
-    $ffl_assist_found = false;
-
-	$url_start = 'https://businesscentral.dynamics.com/';
-	if ( $bc_meta['bc_tenant_id'] ) $tenant_id = $bc_meta['bc_tenant_id'] . '/';
-	if ( $bc_meta['bc_database'] ) $tenant_db = $bc_meta['bc_database'];
-	if ( $bc_meta['bc_user_id'] ) $url_end = '?user_id=' . $bc_meta['bc_user_id'];
-	$url_full = $url_start . $tenant_id . $tenant_db . $url_end;
-
-	// print_r( (object)
-	// 	[
-	// 		'file' => __FILE__,
-	// 		'method' => __METHOD__,
-	// 		'line' => __LINE__,
-	// 		'dump' => [
-	// 			$url_full,
-	// 		],
-	// 	], true );
+    $needle_title_found = false;
+	error_log( '$url_full ' . var_export( $url_full, true ) );
 
 		// Traverse through the menu items and replace the placeholder with the updated link
-    foreach ($menu_items as $menu_item) {
-        if ($menu_item->title == 'FFL Assist') {
-            // Update the URL if 'FFL Assist' is found
-            $menu_item->url = $url_full;
-            wp_update_nav_menu_item($menu->term_id, $menu_item->ID, array(
-                'menu-item-url' => $menu_item->url,
-            ));
-			do_action( 'qm/alert', 'Found & replaced menu mtem ' );
-            $ffl_assist_found = true;
+	$needle_menu_item_title = 'FFL Assist System';
+	foreach ($menu_items as $menu_item) {
+		error_log( '$menu_item ' . var_export( $menu_item, true ) );
+        if ($menu_item->title == $needle_menu_item_title ) {
+
+            // Update the URL destination if target text found
+            wp_update_nav_menu_item(
+				$menu->term_id, 
+				$menu_item->ID, 
+				array(
+					'menu-item-url' => $url_full,
+				)
+			);
+            $needle_title_found = true;
             break;
         }
     }
 
-    // If 'FFL Assist' is not found, add it to the end of the menu
-    if (!$ffl_assist_found) {
-        wp_update_nav_menu_item($menu->term_id, 0, array(
-            'menu-item-title' => 'FFL Assist',
-            'menu-item-url' => $url_full,
-            'menu-item-status' => 'publish',
-        ));
+    // If target text nav item is not found, add it to the end of the menu
+    if (!$needle_title_found) {
+		$menu_item_data = [];
+		$menu_item_data['menu-item-title'] = $needle_menu_item_title;
+		$menu_item_data['menu-item-url'] = $url_full;
+		$menu_item_data['menu-item-status'] = 'publish';
+		$menu_item_data['menu-item-type'] = 'custom';
+		// 0 -> create new menu item. 
+        wp_update_nav_menu_item( $menu->term_id, 0, $menu_item_data );
     }
 }
 
@@ -216,15 +190,47 @@ function reset_quick_links_menu_flag($user_id) {
 }
 add_action('wp_logout', __NAMESPACE__ . '\reset_quick_links_menu_flag');
 
-function greeting() {
-    echo '<h1>HIYA!</h1>';
-}
+/**
+ * My PMPro Account Profile Action Links
+ *
+ * Add new action link on Account Profile Page. 
+ * @link https://github.com/strangerstudios/pmpro-snippets-library/blob/d5091b6d3e90939ecb06bac36d05db6a87f42252/frontend-pages/change-profile-action-links.php#L16
+ * @param [type] $pmpro_profile_action_links
+ * @return void
+ */
+function my_pmpro_account_profile_action_links( $pmpro_profile_action_links ) {
 
-function subscriber_login_greeting($user_login, $user) {
-    // Check if the user has the role of 'subscriber'
-    if (in_array('subscriber', (array) $user->roles)) {
-        // Call the greeting function
-        greeting();
-    }
+	// Set user id to current user.
+	$user_id = get_current_user_id();
+	$bc_meta = get_ffl_assist_custom_bc_meta( $user_id );
+
+	// set your custom links here
+	$my_edit_profile_url    = home_url( 'my-edit-profile-page-slug' );
+
+	/* Uncomment the relative line by removing the comment ("//" double forward slash before the variable) if you would like to change the url for password reset or logout. */
+
+	// $my_change_password_url = home_url( 'my-change-password-page-slug' );
+	// $my_logout_url          = home_url( 'my-logout-page-slug' );
+
+	if ( ! empty( $my_edit_profile_url ) ) {
+		$pmpro_profile_action_links['edit-profile'] = sprintf( '<a id="pmpro_actionlink-profile" href="%s">%s</a>', esc_url( $my_edit_profile_url ), esc_html__( 'Edit Profile', 'paid-memberships-pro' ) );
+	}
+
+	if ( ! empty( $my_change_password_url ) ) {
+		$pmpro_profile_action_links['change-password'] = sprintf( '<a id="pmpro_actionlink-change-password" href="%s">%s</a>', esc_url( $my_change_password_url ), esc_html__( 'Change Password', 'paid-memberships-pro' ) );
+	}
+
+	if ( ! empty( $my_logout_url ) ) {
+		$pmpro_profile_action_links['logout'] = sprintf( '<a id="pmpro_actionlink-logout" href="%s">%s</a>', esc_url( $my_logout_url ), esc_html__( 'Log Out', 'paid-memberships-pro' ) );
+	}
+
+	// Pull out all personal FFL Assist BC login parts. 
+	// $pmpro_profile_action_links['bc_user_id'] = sprintf( "BC User ID: %s", $bc_meta['bc_user_id'] );
+	// $pmpro_profile_action_links['bc_tenant_id'] = sprintf( "BC Tenant ID: %s", $bc_meta['bc_tenant_id'] );
+	// $pmpro_profile_action_links['bc_database_id'] =sprintf( "BC Database: %s", $bc_meta['bc_database_id'] );
+	$pmpro_profile_action_links['bc_logon_url'] = sprintf(  '<a id="pmpro_actionlink-logon-url" href="%s">%s</a>', esc_url( $bc_meta['bc_logon_url'] ), esc_html__( 'FLL Assist System Logon', 'paid-memberships-pro' ) );
+
+	return $pmpro_profile_action_links;
+
 }
-add_action('wp_login', __NAMESPACE__ . '\subscriber_login_greeting', 10, 2);
+add_filter( 'pmpro_account_profile_action_links', __NAMESPACE__ . '\my_pmpro_account_profile_action_links' );

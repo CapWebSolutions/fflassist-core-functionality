@@ -210,8 +210,12 @@ add_action( 'woocommerce_account_access-ffl-assist_endpoint', __NAMESPACE__ . '\
  * @compatible    WooCommerce 9
  * @community     https://businessbloomer.com/club/
  */
-   
- add_shortcode( 'wc_reg_form_bbloomer',  __NAMESPACE__ . '\bbloomer_separate_registration_form' );
+
+// 12/02/2024 - 10:38 -> Remove this stuff in favor of using PMPro for all this membership 
+//    functionality. 
+
+
+//  add_shortcode( 'wc_reg_form_bbloomer',  __NAMESPACE__ . '\bbloomer_separate_registration_form' );
      
  function bbloomer_separate_registration_form() {
     if ( is_user_logged_in() ) return '<p>You are already registered.</p>';
@@ -236,7 +240,7 @@ add_action( 'woocommerce_account_access-ffl-assist_endpoint', __NAMESPACE__ . '\
  * @community     https://businessbloomer.com/club/
  */
   
- add_shortcode( 'wc_login_form_bbloomer',  __NAMESPACE__ . '\bbloomer_separate_login_form' );
+//  add_shortcode( 'wc_login_form_bbloomer',  __NAMESPACE__ . '\bbloomer_separate_login_form' );
   
  function bbloomer_separate_login_form() {
     if ( is_user_logged_in() ) return '<p>You are already logged in</p>'; 
@@ -256,7 +260,7 @@ add_action( 'woocommerce_account_access-ffl-assist_endpoint', __NAMESPACE__ . '\
  * @description   Optionally Redirect Login & Registration Pages to My Account Page If Customer Is Logged In
  */
  
-add_action( 'template_redirect',  __NAMESPACE__ . '\bbloomer_redirect_login_registration_if_logged_in' );
+// add_action( 'template_redirect',  __NAMESPACE__ . '\bbloomer_redirect_login_registration_if_logged_in' );
  
 function bbloomer_redirect_login_registration_if_logged_in() {
     if ( is_page() && is_user_logged_in() && ( has_shortcode( get_the_content(), 'wc_login_form_bbloomer' ) || has_shortcode( get_the_content(), 'wc_reg_form_bbloomer' ) ) ) {
