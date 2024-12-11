@@ -14,6 +14,7 @@ Thumbs.db
 *.sublime-project
 *.sublime-workspace
 *.komodoproject
+.bak$
 
 # ignore log files and databases
 *.log
@@ -64,4 +65,4 @@ Thumbs.db
 # track these mu-plugins, plugins, and themes
 # add your own entries here
 !fflassist-core-functionality/
-*.phpHOLD
+!(?i).*hold$
