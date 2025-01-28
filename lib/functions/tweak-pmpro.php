@@ -13,21 +13,35 @@
  */
 namespace capweb;
 
-// this creates a shortcode, which is called 'myloginbutton'
-// when you add the shortcode [myloginbutton] it adds a login / out button.
+// Create myloginbutton shortcode. 
+// Shortcode [myloginbutton] it adds a login / out button.
+
 add_shortcode( 'myloginbutton', __NAMESPACE__ . '\shortcode_forstuff' );
+
 function shortcode_forstuff() {
-ob_start(); // this let's us easily inject HTML instead of having to echo it out, or return a large string
-?>
-<div style="background: green; pdding: 6px;">
-<?php if (is_user_logged_in()) : ?>
-<a href="<?php echo wp_logout_url(get_permalink()); ?>">Login to read content.</a>
-<!-- remove from here -->
-<?php else : ?>
-<a href="<?php echo wp_login_url(get_permalink()); ?>">Logout message</a>
-<?php endif;?>
-<!-- to here to not show anything to logged in users -->
-</div>
-<?php
-return ob_get_clean(); // this resets things so the page can get back to displaying its other content
+    ob_start();
+
+    ?>
+    <?php if (is_user_logged_in()) : ?>
+        <div class="kt-inside-inner-col">
+            <div class="wp-block-kadence-advancedbtn kb-buttons-wrap">
+                <a class="kb-button kt-button button kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-false wp-block-kadence-singlebtn" href="<?php echo wp_logout_url( home_url() ); ?>">
+                    <span class="kt-btn-inner-text">User logged in. Click to log out.</span>
+                </a>
+            </div>
+        </div>
+    <!-- remove from here -->
+    <?php else : ?>
+        <div class="kt-inside-inner-col">
+            <div class="wp-block-kadence-advancedbtn kb-buttons-wrap">
+            <a class="kb-button kt-button button kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-false wp-block-kadence-singlebtn" href="<?php echo esc_url( wp_login_url( get_permalink() ) ); ?>" alt="<?php esc_attr_e( 'Log into FFLAssist to read content.', 'fflassist' ); ?>">
+            <?php _e( 'Log into FFLAssist to read content.', 'fflassist' ); ?></a>
+            </div>
+        </div>
+    <?php endif;?>
+    <!-- to here to not show anything to logged in users -->
+
+    <?php
+    return ob_get_clean(); // this resets things so the page can get back to displaying its other content
+
 }
