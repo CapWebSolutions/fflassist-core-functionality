@@ -383,3 +383,15 @@ function bbloomer_woocommerce_gf_single_product() {
    unset($fields['billing']['billing_country']);
    return $fields;
  }
+
+
+/**
+ * Add product short description, aka excerpt, after product title. 
+ *   This is only applied to W/C defined shop page. 
+ *   As of 1/2/25 we are using a custom page to display the shop.
+ */
+ add_filter('woocommerce_after_shop_loop_item_title',  __NAMESPACE__ . '\add_short_description', 2 );
+ function add_short_description( ) {
+   global $product;
+   echo $product->post->post_excerpt;
+ }
