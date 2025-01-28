@@ -128,10 +128,12 @@ function update_quick_links_menu( $bc_meta ) {
 
 // Call the function
 // get_ffl_assist_custom_bc_meta();
-get_ffl_assist_custom_bc_meta( $user_id, $bc_meta );
+// $user_id = '1';
+// $bc_meta = '';
+// get_ffl_assist_custom_bc_meta( $user_id, $bc_meta );
 
 /**
- * Undocumented function
+ * call_update_quick_links_menu_on_login
  *
  * @param [type] $user_login
  * @param [type] $user
