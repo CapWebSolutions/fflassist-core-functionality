@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.4] - 2025-02-04
+
+### Added
+
+- PMPro tweaks for new action links on account page. 
+- PMPro tweaks for restricitng trial memberships to one time only
+- Set redirect for members logging in to FFL Splash
+- PMPro tweaks add capability to limit number of members at a given level, specifically for Demo
+- Added code to remove WooCommerce bqackground image regeneration
+
+### Removed
+
+- Extraneous filler text in README
+
+### Changed 
+
+- Typo in quick links menu handling. 
+
 ## [1.1.3] - 2025-01-28
 
 ### Changed
