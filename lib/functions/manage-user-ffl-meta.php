@@ -120,7 +120,7 @@ function update_quick_links_menu( $bc_meta ) {
     if (!$ffl_assist_found) {
         wp_update_nav_menu_item($menu->term_id, 0, array(
             'menu-item-title' => 'FFL Assist',
-            'menu-item-url' => $url_full,
+            'menu-item-url' => $url_full,	
             'menu-item-status' => 'publish',
         ));
     }
