@@ -17,7 +17,7 @@
 /**
  * Detect if Woo plugin active. 
  */
-if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) return;
+// if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) return;
 
 //plugin is activated - set up all filters
     
@@ -27,6 +27,10 @@ remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 3
 
 // Remove the category count for WooCommerce categories
 add_filter( 'woocommerce_subcategory_count_html', '__return_null' );
+
+// Turn off background image regeneration
+// Ref: https://developer.woocommerce.com/docs/thumbnail-image-regeneration/
+add_filter( 'woocommerce_background_image_regeneration', '__return_false' );
 
 
 /**
