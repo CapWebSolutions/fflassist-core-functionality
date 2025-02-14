@@ -203,7 +203,7 @@ function my_pmpro_membership_levels_table_extra_cols_header_spots( $reordered_le
 	<th><?php esc_html_e( 'Spots Claimed', 'pmpro-customizations' ); ?></th>
 	<?php
 }
-add_action( 'pmpro_membership_levels_table_extra_cols_header', __NAMESPACE__ . '\my_pmpro_membership_levels_table_extra_cols_header_spots' );
+// add_action( 'pmpro_membership_levels_table_extra_cols_header', __NAMESPACE__ . '\my_pmpro_membership_levels_table_extra_cols_header_spots' );
 
 function my_pmpro_membership_levels_table_extra_cols_body_spots( $level ) {
 	// Get the maximum number of members allowed in this level.
