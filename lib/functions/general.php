@@ -13,42 +13,6 @@
  */
 namespace capweb;
 
-/**
- * Don't Update Plugin
- *
- * @since 1.0.0
- *
- * This prevents you being prompted to update if there's a public plugin
- * with the same name.
- *
- * @author Mark Jaquith
- * @link http://markjaquith.wordpress.com/2009/12/14/excluding-your-plugin-or-theme-from-update-checks/
- *
- * @param array  $r, request arguments
- * @param string $url, request url
- * @return array request arguments
- */
-function core_functionality_hidden( $r, $url ) {
-	if ( 0 !== strpos( $url, 'http://api.wordpress.org/plugins/update-check' ) ) {
-		return $r; // Not a plugin update request. Bail immediately.
-	}
-	$plugins = unserialize( $r['body']['plugins'] );
-	unset( $plugins->plugins[ plugin_basename( __FILE__ ) ] );
-	unset( $plugins->active[ array_search( plugin_basename( __FILE__ ), $plugins->active ) ] );
-	$r['body']['plugins'] = serialize( $plugins );
-	return $r;
-}
-add_filter( 'http_request_args', __NAMESPACE__ . '\core_functionality_hidden', 5, 2 );
-
-/** 
- * Move Yoast to the Bottom of editor screen
- */
-function move_yoast_to_bottom() {
-    return 'low';
-}
-add_filter( 'wpseo_metabox_prio', __NAMESPACE__ . '\move_yoast_to_bottom');
-
-
 /**	
  * Redirect non-admin users to home page on logout. 
  */
@@ -60,3 +24,33 @@ function logout_redirect( $redirect_to, $requested_redirect, $user ) {
     return $redirect_to;
 }
 add_filter( 'logout_redirect', __NAMESPACE__ . '\logout_redirect', 10, 3 );
+
+
+/**
+ * call_update_quick_links_menu_on_login
+ *
+ * @param [type] $user_login
+ * @param [type] $user
+ * @return void
+ */
+function call_update_quick_links_menu_on_login($user_login, $user) {
+    // Check if the user has the role of 'subscriber'
+    if (in_array('subscriber', (array) $user->roles)) {
+        // Check if the function has already been called during this session
+        if (!get_user_meta($user->ID, 'quick_links_menu_updated', true)) {
+            // Call the update_quick_links_menu function
+            update_quick_links_menu( $bc_meta);
+
+            // Set a user meta to indicate the function has been called
+            update_user_meta($user->ID, 'quick_links_menu_updated', true);
+        }
+    }
+}
+add_action('wp_login', __NAMESPACE__ . '\call_update_quick_links_menu_on_login', 10, 2);
+
+function reset_quick_links_menu_flag($user_id) {
+    // Reset the flag when the user logs out
+    delete_user_meta($user_id, 'quick_links_menu_updated');
+}
+add_action('wp_logout', __NAMESPACE__ . '\reset_quick_links_menu_flag');
+
