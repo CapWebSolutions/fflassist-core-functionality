@@ -56,88 +56,6 @@ function bbloomer_remove_metaboxes_edit_product() {
    remove_meta_box( '_kad_classic_meta_control', 'product', 'side' );
 }
 
-
-/**
- * @snippet       Add Custom Field @ WooCommerce Checkout Page
- * @how-to        businessbloomer.com/woocommerce-customization
- * @author        Rodolfo Melogli, Business Bloomer
- * @testedwith    WooCommerce 6
- * @community     https://businessbloomer.com/club/
- */
-  
-//  add_action( 'woocommerce_before_order_notes',  __NAMESPACE__ . '\bbloomer_add_custom_checkout_field' );
-// add_action( 'woocommerce_after_checkout_billing_form',  __NAMESPACE__ . '\bbloomer_add_custom_checkout_field' );
-add_action( 'woocommerce_before_checkout_billing_form',  __NAMESPACE__ . '\bbloomer_add_custom_checkout_field' );
-  
- function bbloomer_add_custom_checkout_field( $checkout ) { 
-    $current_user = wp_get_current_user();
-    $saved_license_no = $current_user->license_no;
-    woocommerce_form_field( 'license_no', array(        
-       'type' => 'text',        
-       'class' => array( 'form-row-wide' ),        
-       'label' => 'FFL License Number',        
-       'placeholder' => 'x-xx-xxx-xx-xx-xxxx',        
-       'required' => true,        
-       'default' => $saved_license_no,
-       'description' => "Enter license number with or without '-'. All characters required."        
-    ), $checkout->get_value( 'license_no' ) ); 
- }
-
- /**
- * @snippet       Validate Custom Field @ WooCommerce Checkout Page
- * @how-to        businessbloomer.com/woocommerce-customization
- * @author        Rodolfo Melogli, Business Bloomer
- * @testedwith    WooCommerce 6
- * @community     https://businessbloomer.com/club/
- */
- 
-add_action( 'woocommerce_checkout_process',  __NAMESPACE__ . '\bbloomer_validate_new_checkout_field' );
-  
-function bbloomer_validate_new_checkout_field() {    
-   if ( ! $_POST['license_no'] ) {
-      wc_add_notice( 'Please enter your FFL Licence Number', 'error' );
-   }
-
-   // Reformat and validate the license number entered. 
-   if ( ! is_ffl_code_valid( $_POST['license_no'] ) ) {
-      wc_add_notice( 'Invalid FFL Number entered. Please enter a valid FFL Licence Number', 'error' );
-   }
-}
-
-/**
- * @snippet       Save & Display Custom Field @ WooCommerce Order
- * @how-to        businessbloomer.com/woocommerce-customization
- * @author        Rodolfo Melogli, Business Bloomer
- * @testedwith    WooCommerce 6
- * @community     https://businessbloomer.com/club/
- */
- 
- add_action( 'woocommerce_checkout_update_order_meta',  __NAMESPACE__ . '\bbloomer_save_new_checkout_field' );
-  
- function bbloomer_save_new_checkout_field( $order_id ) { 
-     if ( $_POST['license_no'] ) update_post_meta( $order_id, '_license_no', esc_attr( $_POST['license_no'] ) );
- }
-  
- add_action( 'woocommerce_thankyou', 'bbloomer_show_new_checkout_field_thankyou' );
-    
- function bbloomer_show_new_checkout_field_thankyou( $order_id ) {    
-    if ( get_post_meta( $order_id, '_license_no', true ) ) echo '<p><strong>FFL License Number:</strong> ' . get_post_meta( $order_id, '_license_no', true ) . '</p>';
- }
-   
- add_action( 'woocommerce_admin_order_data_after_billing_address',  __NAMESPACE__ . '\bbloomer_show_new_checkout_field_order' );
-    
- function bbloomer_show_new_checkout_field_order( $order ) {    
-    $order_id = $order->get_id();
-    if ( get_post_meta( $order_id, '_license_no', true ) ) echo '<p><strong>License Number:</strong> ' . get_post_meta( $order_id, '_license_no', true ) . '</p>';
- }
-  
- add_action( 'woocommerce_email_after_order_table',  __NAMESPACE__ . '\bbloomer_show_new_checkout_field_emails', 20, 4 );
-   
- function bbloomer_show_new_checkout_field_emails( $order, $sent_to_admin, $plain_text, $email ) {
-     if ( get_post_meta( $order->get_id(), '_license_no', true ) ) echo '<p><strong>FFL License Number:</strong> ' . get_post_meta( $order->get_id(), '_license_no', true ) . '</p>';
- }
- 
-
  /**
  * @snippet       Hide Downloads Tab @ My Account Page
  * @how-to        businessbloomer.com/woocommerce-customization
@@ -198,7 +116,7 @@ add_filter( 'woocommerce_account_menu_items', __NAMESPACE__ . '\bbloomer_add_acc
  
 function bbloomer_access_ffl_assist_content() {
   echo '<h3>Access FFL Assist System</h3><p>Welcome to the FFL Assist launch page.</p>';
-  ?> <a href="#">Access Ssytem Here</a><?php
+  ?> <a href="#">Access System Here</a><?php
 }
  
 add_action( 'woocommerce_account_access-ffl-assist_endpoint', __NAMESPACE__ . '\bbloomer_access_ffl_assist_content' );
@@ -338,40 +256,7 @@ add_action( 'woocommerce_add_to_cart', __NAMESPACE__ . '\bbloomer_add_coupon_to_
        WC()->session->__unset( 'coupon_code' );
     }
  }
- 
 
- /**
- * @snippet       Show CF7 Form @ WooCommerce Single Product
- * @how-to        businessbloomer.com/woocommerce-customization
- * @author        Rodolfo Melogli, Business Bloomer
- * @compatible    WooCommerce 5
- * @community     https://businessbloomer.com/club/
- */
-  
-add_action( 'woocommerce_after_add_to_cart_form', __NAMESPACE__ . '\bbloomer_woocommerce_gf_single_product', 30 );
-  
-function bbloomer_woocommerce_gf_single_product() {
-   global $product;
-   if (is_product() && $product->get_id() == 2127) {
-
-      echo '<button type="submit" id="trigger_gf" class="single_add_to_cart_button button alt">Product Inquiry</button>';
-      echo '<div id="product_inq" style="display:none">';
-      echo do_shortcode('[gravityform id="5" title="true"]');
-      echo '</div>';
-      wc_enqueue_js( "
-         $('#trigger_gf').on('click', function(){
-            if ( $(this).text() == 'Product Inquiry' ) {
-               $('#product_inq').css('display','block');
-               $('input[name=\'your-subject\']').val('" . get_the_title() . "');
-               $('#trigger_gf').html('Close');
-            } else {
-               $('#product_inq').hide();
-               $('#trigger_gf').html('Product Inquiry');
-            }
-         });
-      " );
-   }
-}
 
 /**
  * @snippet       Hide Fields if Virtual @ WooCommerce Checkout
