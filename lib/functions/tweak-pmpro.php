@@ -46,17 +46,66 @@ function shortcode_forstuff() {
 
 }
 
+/**
+ * Change the wording from 'Membership' to 'Subscription' in Paid Memberships Pro
+ *
+ * This filter will search your codebase for translatable strings and replace when an exact match is found.
+ *
+ * title: Change the wording from 'Membership' to 'Subscription' in Paid Memberships Pro
+ * layout: snippet
+ * collection: misc
+ * category: localization
+ *
+ * You can add this recipe to your site by creating a custom plugin
+ * or using the Code Snippets plugin available for free in the WordPress repository.
+ * Read this companion article for step-by-step directions on either method.
+ * https://www.paidmembershipspro.com/create-a-plugin-for-pmpro-customizations/
+ */
+
+/**
+ * Here we're changing 'Membership' to 'Subscription' for Paid Memberships Pro.
+ *
+ * @param  string $output_text     this represents the end result
+ * @param  string $input_text      what is written in the code that we want to change
+ * @param  string $domain          text-domain of the plugin/theme that contains the code
+ *
+ * @return string                  the result of the text transformation
+ */
+function my_gettext_membership( $output_text, $input_text, $domain ) {
+	if ( ! is_admin() && ( 'paid-memberships-pro' === $domain || strpos( $domain, 'pmpro-' ) !== false ) ) {
+		$output_text = str_replace( 'Membership Level', 'Subscription Level', $output_text );
+		$output_text = str_replace( 'membership level', 'subscription level', $output_text );
+		$output_text = str_replace( 'membership', 'subscription', $output_text );
+		$output_text = str_replace( 'Membership', 'Subscription', $output_text );
+	}
+	return $output_text;
+}
+// add_filter( 'gettext', __NAMESPACE__ . '\my_gettext_membership', 10, 3 );
+
+// Support _n calls.
+function my_ngettext_membership( $output_text, $single, $plural, $number, $domain ) {
+	if ( $number == 1 ) {
+		return my_gettext_membership( $output_text, $single, $domain );
+	} else {
+		return my_gettext_membership( $output_text, $plural, $domain );
+	}
+}
+// add_filter( 'ngettext', __NAMESPACE__ . '\my_ngettext_membership', 10, 5 );
+
+
+
 
 function my_pmpro_member_action_links( $links, $level_id ){
     if ( $level_id == 1 ) {
         //Add an upgrade link
-            $links['upgrade'] = '<a id="pmpro_actionlink-upgrade" href="' . esc_url( add_query_arg( 'pmpro_level', 2, pmpro_url('checkout' ) ) ) . '">' . esc_html__( 'Upgrade to Level 2', 'fflassist' ) . '</a>';
+            $links['upgrade'] = '<a id="pmpro_actionlink-upgrade" href="' . esc_url( add_query_arg( 'pmpro_level', 3, pmpro_url('checkout' ) ) ) . '">' . esc_html__( 'Upgrade to Annual', 'fflassist' ) . '</a>';
     }
-    if ( $level_id == 1 || $level_id == 2 ) {
-    $links['bonuses'] = '<a id="pmpro_actionlink-bonuses" href="http://fflassist-v0120/bonuses">' . esc_html__( 'View Your Exclusive Bonuses', 'fflassist') . '</a>';
-    }
+    // if ( $level_id == 1 || $level_id == 2 ) {
+    // $links['bonuses'] = '<a id="pmpro_actionlink-bonuses" href="/bonuses">' . esc_html__( 'View Your Exclusive Bonuses', 'fflassist') . '</a>';
+    // }
     if ( $level_id == 1 || $level_id == 2 || $level_id == 3 ) {
-        $links['html'] = '<a id="pmpro_actionlink-html" href="/assist-content/public-blog/">' . esc_html__( 'View Your Exclusive Content', 'fflassist') . '</a>';
+        $links['nextsteps'] = '<a id="pmpro_actionlink-nextsteps" href="/assist-content/public-blog/">' . esc_html__( 'Next Steps', 'fflassist') . '</a>';
+        $links['fflassist-logon'] = '<a id="pmpro_actionlink-fflassist-logon" href="/assist-content/fflassist-splash/">' . esc_html__( 'Logon to FFLAssist', 'fflassist') . '</a>';
     }
     return $links;    
     }
@@ -162,4 +211,28 @@ function my_pmpro_login_redirect_url( $redirect_to, $request, $user ) {
 
     return $redirect_to;
 }
-add_filter( 'pmpro_login_redirect_url', __NAMESPACE__ . '\my_pmpro_login_redirect_url', 10, 3 );
+// add_filter( 'pmpro_login_redirect_url', __NAMESPACE__ . '\my_pmpro_login_redirect_url', 10, 3 );
+
+
+add_filter( 'kadence_blocks_pro_query_loop_query_vars', function( $query, $ql_query_meta, $ql_id ) {
+
+    // if ( $ql_id == 24170 ) {
+    //    $query['tax_query'] = array(
+    //       array(
+    //          'taxonomy' => 'category',
+    //          'field' => 'slug',
+    //          'terms' => 'subscriber',
+    //       )
+    //    );
+    // }
+    if ( $ql_id == 24170 ) {
+      $query['category__not_in'] = 37; //Subscriber category	
+    }
+    if ( $ql_id == 24254 ) {
+        $query['category_in'] = 37; //Subscriber category	
+      }
+
+    return $query;
+ }, 10, 3 );
+ // Ref: https://www.kadencewp.com/help-center/docs/kadence-blocks/custom-queries-for-advanced-query-loop-block/
+
