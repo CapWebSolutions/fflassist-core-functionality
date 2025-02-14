@@ -13,28 +13,17 @@
  */
 namespace capweb;
 
-function create_ffl_assist_nav_item() {
-
-}
-
 function get_ffl_assist_custom_bc_meta( $user_id, $bc_meta ) {
 
 	// Exit false if no user_id provided or if user_id not valid
 	if ( !$user_id ) return false;
 
 	// Set return values
-	$bc_meta['bc_user_id'] = 'user-id';
-	$bc_meta['bc_tenant_id'] = 'tenant-id';
-	$bc_meta['bc_database'] = 'bc-database';
-	error_log( print_r( (object)
-		[
-			'file' => __FILE__,
-			'method' => __METHOD__,
-			'line' => __LINE__,
-			'dump' => [
-				$bc_meta,
-			],
-		], true ) );
+	$bc_meta['bc_user_id'] = rwmb_meta( 'bc_user_id', [ 'object_type' => 'user' ], $user_id );
+	$bc_meta['bc_tenant_id'] = rwmb_meta( 'bc_tenant_id', [ 'object_type' => 'user' ], $user_id);
+	$bc_meta['bc_database'] = rwmb_meta( 'bc_database', [ 'object_type' => 'user' ], $user_id );
+	$bc_meta['bc_logon_url'] = rwmb_meta( 'bc_logon_url', [ 'object_type' => 'user' ], $user_id );
+	$bc_meta['bc_atf_ffl_number'] = rwmb_meta( 'bc_atf_ffl_number', [ 'object_type' => 'user' ], $user_id );
 	return;
 }
 
@@ -125,38 +114,3 @@ function update_quick_links_menu( $bc_meta ) {
         ));
     }
 }
-
-// Call the function
-// get_ffl_assist_custom_bc_meta();
-// $user_id = '1';
-// $bc_meta = '';
-// get_ffl_assist_custom_bc_meta( $user_id, $bc_meta );
-
-/**
- * call_update_quick_links_menu_on_login
- *
- * @param [type] $user_login
- * @param [type] $user
- * @return void
- */
-function call_update_quick_links_menu_on_login($user_login, $user) {
-    // Check if the user has the role of 'subscriber'
-    if (in_array('subscriber', (array) $user->roles)) {
-        // Check if the function has already been called during this session
-        if (!get_user_meta($user->ID, 'quick_links_menu_updated', true)) {
-            // Call the update_quick_links_menu function
-            update_quick_links_menu();
-
-            // Set a user meta to indicate the function has been called
-            update_user_meta($user->ID, 'quick_links_menu_updated', true);
-        }
-    }
-}
-add_action('wp_login', __NAMESPACE__ . '\call_update_quick_links_menu_on_login', 10, 2);
-
-function reset_quick_links_menu_flag($user_id) {
-    // Reset the flag when the user logs out
-    delete_user_meta($user_id, 'quick_links_menu_updated');
-}
-add_action('wp_logout', __NAMESPACE__ . '\reset_quick_links_menu_flag');
-
