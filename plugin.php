@@ -3,7 +3,7 @@
  * Plugin Name: FFLAssist Core Functionality
  * Plugin URI: https://github.com/CapWebSolutions/fflassist-core-functionality
  * Description: This contains core functionality for FFLAssist so that it is theme independent. It should remain activated.
- * Version: 1.1.4
+ * Version: 1.2.0
  * Author: Cap Web Solutions
  * Author URI: https://capwebsolutions.com
  * GitHub Plugin URI: https://github.com/CapWebSolutions/fflassist-core-functionality
@@ -17,7 +17,7 @@
  *
  */
 
-namespace capweb;
+// namespace capweb;
 
 // Define needed constants
 define( 'CORE_FUNCTIONALITY_PLUGIN_DIR', plugin_dir_path( __FILE__ ) ); //location of plugin folder on disk
@@ -25,7 +25,7 @@ define( 'CORE_FUNCTIONALITY_PLUGIN_URI', plugin_dir_url( __FILE__ ) );  //locati
 define( 'CORE_FUNCTIONALITY_THEME_DIR', get_stylesheet_directory() );   // Used in checking location of logo file
 define( 'CORE_FUNCTIONALITY_THEME_URI', get_stylesheet_directory_uri() );   // Used in checking location of logo file
 
-add_action( 'after_setup_theme', __NAMESPACE__ . '\core_setup' );
+add_action( 'after_setup_theme','core_setup' );
 function core_setup() {
 	if( ! function_exists('get_plugin_data') ){
 		require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
@@ -53,7 +53,7 @@ function enqueue_core_scripts_and_styles() {
 		'all' 
 	);
 }
-add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_core_scripts_and_styles' );
+add_action( 'wp_enqueue_scripts','enqueue_core_scripts_and_styles' );
 
 
 /**

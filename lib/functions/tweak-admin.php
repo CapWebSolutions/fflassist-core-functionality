@@ -11,7 +11,7 @@
  * @copyright    Copyright (c) 2024, Matt Ryan
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-namespace capweb;
+// namespace capweb;
 
 /* ********************** Contents **********************
   01. Change color of admin bar if using dev or staging site
@@ -42,8 +42,8 @@ function devsite_admin_bar() {
 			echo '<style>#wpadminbar { background-color: #ff0000; }</style>';
 		}
 }
-add_action('admin_head', __NAMESPACE__ . '\devsite_admin_bar');
-add_action('wp_head', __NAMESPACE__ . '\devsite_admin_bar');
+add_action('admin_head','devsite_admin_bar');
+add_action('wp_head','devsite_admin_bar');
 
 
 
@@ -70,8 +70,8 @@ function custom_menu_order( $menu_ord ) {
 		'users.php', // the media manager
 	);
 }
-add_filter( 'custom_menu_order', __NAMESPACE__ . '\custom_menu_order' );
-add_filter( 'menu_order', __NAMESPACE__ . '\custom_menu_order' );
+add_filter( 'custom_menu_order','custom_menu_order' );
+add_filter( 'menu_order','custom_menu_order' );
 
 
 /**
@@ -93,7 +93,7 @@ function remove_menus() {
 		if ( in_array( $value[0] != null?$value[0]:'' , $restricted ) ) {unset( $menu[ key( $menu ) ] );}
 	}
 }
-add_action( 'admin_menu', __NAMESPACE__ . '\remove_menus' );
+add_action( 'admin_menu','remove_menus' );
 
 /**
  * 04. Customize Admin Bar Items
@@ -105,11 +105,11 @@ function admin_bar_items() {
 	global $wp_admin_bar;
 	$wp_admin_bar->remove_menu( 'new-link', 'new-content' );
 }
-add_action( 'wp_before_admin_bar_render', __NAMESPACE__ . '\admin_bar_items' );
+add_action( 'wp_before_admin_bar_render','admin_bar_items' );
 
 
 // Remove theme and plugin editor links
-add_action( 'admin_init', __NAMESPACE__ . '\hide_editor_and_tools' );
+add_action( 'admin_init','hide_editor_and_tools' );
 function hide_editor_and_tools() {
 	remove_submenu_page( 'themes.php','theme-editor.php' );
 	remove_submenu_page( 'plugins.php','plugin-editor.php' );
@@ -129,7 +129,7 @@ function change_howdy_greeting( $wp_admin_bar ) {
         ) );
     }
 }
-add_action( 'admin_bar_menu', __NAMESPACE__ . '\change_howdy_greeting', 10 );
+add_action( 'admin_bar_menu','change_howdy_greeting', 10 );
 
 /**
  * 09. Add thumbnail column to post listing
@@ -192,7 +192,7 @@ function on_specific_admin_page() {
     return false;
 }
     if ( function_exists( 'add_theme_support' ) && ( on_specific_admin_page() ) ) {
-        add_filter( 'manage_posts_columns' , __NAMESPACE__ . '\add_thumbnail_columns' );
-        add_action( 'manage_posts_custom_column' , __NAMESPACE__ . '\add_thumbnail_columns_data', 10, 2 );
+        add_filter( 'manage_posts_columns' ,'add_thumbnail_columns' );
+        add_action( 'manage_posts_custom_column' ,'add_thumbnail_columns_data', 10, 2 );
     }
 

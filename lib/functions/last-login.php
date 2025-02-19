@@ -15,19 +15,19 @@
  * @copyright    Copyright (c) 2024, Matt Ryan
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-namespace capweb;
+// namespace capweb;
 
 
 //Record user's last login to custom meta
-add_action( 'wp_login', __NAMESPACE__ . '\capture_login_time', 10, 2 );
+add_action( 'wp_login','capture_login_time', 10, 2 );
 
 function capture_login_time( $user_login, $user ) {
   update_user_meta( $user->ID, 'last_login', time() );
 }
 
 //Register new custom column with last login time
-add_filter( 'manage_users_columns', __NAMESPACE__ . '\user_last_login_column' );
-add_filter( 'manage_users_custom_column', __NAMESPACE__ . '\last_login_column', 10, 3 );
+add_filter( 'manage_users_columns','user_last_login_column' );
+add_filter( 'manage_users_custom_column','last_login_column', 10, 3 );
 
 function user_last_login_column( $columns ) {
 	$columns['last_login'] = 'Last Login';
@@ -47,8 +47,8 @@ function last_login_column( $output, $column_id, $user_id ){
 }
 
 //Allow the last login columns to be sortable
-add_filter( 'manage_users_sortable_columns', __NAMESPACE__ . '\sortable_last_login_column' );
-add_action( 'pre_get_users', __NAMESPACE__ . '\sort_last_login_column' );
+add_filter( 'manage_users_sortable_columns','sortable_last_login_column' );
+add_action( 'pre_get_users','sort_last_login_column' );
 
 function sortable_last_login_column( $columns ) {
 	return wp_parse_args( array(

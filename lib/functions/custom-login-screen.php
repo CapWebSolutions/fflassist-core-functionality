@@ -12,7 +12,7 @@
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-namespace capweb;
+// namespace capweb;
  /**
  * Customize login screen with site logo replacing WordPress logo.
  *   New logo placed in the assets/images folder within Core Functionality plugin 
@@ -65,7 +65,7 @@ function login_logo() {
 	<?php 
 }
 
-add_action( 'login_enqueue_scripts', __NAMESPACE__ . '\login_logo' );
+add_action( 'login_enqueue_scripts','login_logo' );
 
 /**
  * Grab the address of the site to connect to new Logo 
@@ -74,7 +74,7 @@ add_action( 'login_enqueue_scripts', __NAMESPACE__ . '\login_logo' );
 function login_logo_url() {
     return home_url();
 }
-add_filter( 'login_headerurl', __NAMESPACE__ . '\login_logo_url' );
+add_filter( 'login_headerurl','login_logo_url' );
   
 /** 
  * Grab the name of the site. 
@@ -82,4 +82,4 @@ add_filter( 'login_headerurl', __NAMESPACE__ . '\login_logo_url' );
 function login_logo_url_text() {
     return get_bloginfo( $show = 'name', $filter = 'raw' );
 }
-add_filter( 'login_headertext', __NAMESPACE__ . '\login_logo_url_text' );
+add_filter( 'login_headertext','login_logo_url_text' );

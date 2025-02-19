@@ -13,12 +13,12 @@
  */
 
 
- namespace capweb;
+//  // namespace capweb;
  
 // Auto Add Alt Tags
 /* Automatically set the image Title, Alt-Text, Caption & Description upon upload
 --------------------------------------------------------------------------------------*/
-add_action( 'add_attachment', __NAMESPACE__ . '\set_image_meta_upon_image_upload' );
+add_action( 'add_attachment','set_image_meta_upon_image_upload' );
 function set_image_meta_upon_image_upload( $post_ID ) {
  
 	// Check if uploaded file is an image, else do nothing
@@ -59,7 +59,7 @@ function set_default_featured_image( $html, $post_id, $post_thumbnail_id, $size,
     }
     return $html;
 }
-add_filter( 'post_thumbnail_html', __NAMESPACE__ . '\set_default_featured_image', 10, 5 );
+add_filter( 'post_thumbnail_html','set_default_featured_image', 10, 5 );
  
 function set_default_featured_image_url( $url, $post_id ) {
     if ( empty( get_post_thumbnail_id( $post_id ) ) ) {
@@ -67,4 +67,4 @@ function set_default_featured_image_url( $url, $post_id ) {
     }
     return $url;
 }
-add_filter( 'default_post_thumbnail_url', __NAMESPACE__ . '\set_default_featured_image_url', 10, 2 );
+add_filter( 'default_post_thumbnail_url','set_default_featured_image_url', 10, 2 );

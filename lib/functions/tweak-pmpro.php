@@ -11,12 +11,12 @@
  * @copyright    Copyright (c) 2024, Matt Ryan
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-namespace capweb;
+// namespace capweb;
 
 // Create myloginbutton shortcode. 
 // Shortcode [myloginbutton] it adds a login / out button.
 
-add_shortcode( 'myloginbutton', __NAMESPACE__ . '\shortcode_forstuff' );
+add_shortcode( 'myloginbutton','shortcode_forstuff' );
 
 function shortcode_forstuff() {
     ob_start();
@@ -80,7 +80,7 @@ function my_gettext_membership( $output_text, $input_text, $domain ) {
 	}
 	return $output_text;
 }
-// add_filter( 'gettext', __NAMESPACE__ . '\my_gettext_membership', 10, 3 );
+// add_filter( 'gettext','my_gettext_membership', 10, 3 );
 
 // Support _n calls.
 function my_ngettext_membership( $output_text, $single, $plural, $number, $domain ) {
@@ -90,7 +90,7 @@ function my_ngettext_membership( $output_text, $single, $plural, $number, $domai
 		return my_gettext_membership( $output_text, $plural, $domain );
 	}
 }
-// add_filter( 'ngettext', __NAMESPACE__ . '\my_ngettext_membership', 10, 5 );
+// add_filter( 'ngettext','my_ngettext_membership', 10, 5 );
 
 
 
@@ -109,7 +109,7 @@ function my_pmpro_member_action_links( $links, $level_id ){
     }
     return $links;    
     }
-    add_filter( 'pmpro_member_action_links', __NAMESPACE__ . '\my_pmpro_member_action_links', 10, 2 );
+    add_filter( 'pmpro_member_action_links','my_pmpro_member_action_links', 10, 2 );
 
     
 /**
@@ -144,7 +144,7 @@ function my_pmpro_after_change_membership_level( $level_id, $user_id ) {
 		update_user_meta( $user_id, "pmpro_trial_level_used_{$level_id}", '1' );
 	}
 }
-add_action( 'pmpro_after_change_membership_level', __NAMESPACE__ . '\my_pmpro_after_change_membership_level', 10, 2 );
+add_action( 'pmpro_after_change_membership_level','my_pmpro_after_change_membership_level', 10, 2 );
 
 // check at checkout if the user has used the trial level already
 function my_pmpro_registration_checks( $value ) {
@@ -171,7 +171,7 @@ function my_pmpro_registration_checks( $value ) {
 
 	return $value;
 }
-add_filter( 'pmpro_registration_checks', __NAMESPACE__ . '\my_pmpro_registration_checks' );
+add_filter( 'pmpro_registration_checks','my_pmpro_registration_checks' );
 
 // swap the expiration text if the user has used the trial
 function my_pmpro_level_expiration_text( $text, $level ) {
@@ -188,7 +188,7 @@ function my_pmpro_level_expiration_text( $text, $level ) {
 
 	return $text;
 }
-add_filter( 'pmpro_level_expiration_text', __NAMESPACE__ . '\my_pmpro_level_expiration_text', 10, 2 );
+add_filter( 'pmpro_level_expiration_text','my_pmpro_level_expiration_text', 10, 2 );
 
 /**
  * Redirect members to a specific page when logging in.
@@ -211,28 +211,7 @@ function my_pmpro_login_redirect_url( $redirect_to, $request, $user ) {
 
     return $redirect_to;
 }
-// add_filter( 'pmpro_login_redirect_url', __NAMESPACE__ . '\my_pmpro_login_redirect_url', 10, 3 );
+// add_filter( 'pmpro_login_redirect_url','my_pmpro_login_redirect_url', 10, 3 );
 
 
-add_filter( 'kadence_blocks_pro_query_loop_query_vars', function( $query, $ql_query_meta, $ql_id ) {
-
-    // if ( $ql_id == 24170 ) {
-    //    $query['tax_query'] = array(
-    //       array(
-    //          'taxonomy' => 'category',
-    //          'field' => 'slug',
-    //          'terms' => 'subscriber',
-    //       )
-    //    );
-    // }
-    if ( $ql_id == 24170 ) {
-      $query['category__not_in'] = 37; //Subscriber category	
-    }
-    if ( $ql_id == 24254 ) {
-        $query['category_in'] = 37; //Subscriber category	
-      }
-
-    return $query;
- }, 10, 3 );
- // Ref: https://www.kadencewp.com/help-center/docs/kadence-blocks/custom-queries-for-advanced-query-loop-block/
 

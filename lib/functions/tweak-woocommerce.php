@@ -12,7 +12,7 @@
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
- namespace capweb;
+//  // namespace capweb;
 
 /**
  * Detect if Woo plugin active. 
@@ -41,7 +41,7 @@ add_filter( 'woocommerce_background_image_regeneration', '__return_false' );
  * @community     https://businessbloomer.com/club/
 */
  
-add_action( 'add_meta_boxes_product', __NAMESPACE__ . '\bbloomer_remove_metaboxes_edit_product', 9999 );
+add_action( 'add_meta_boxes_product','bbloomer_remove_metaboxes_edit_product', 9999 );
  
 function bbloomer_remove_metaboxes_edit_product() {
  
@@ -64,7 +64,7 @@ function bbloomer_remove_metaboxes_edit_product() {
  * @community     https://businessbloomer.com/club/
  */
  
-add_filter( 'woocommerce_account_menu_items', __NAMESPACE__ . '\bbloomer_hide_downloads_tab_my_account', 9999 );
+add_filter( 'woocommerce_account_menu_items','bbloomer_hide_downloads_tab_my_account', 9999 );
  
 function bbloomer_hide_downloads_tab_my_account( $items ) {
     $downloads = ! empty( WC()->customer ) ? WC()->customer->get_downloadable_products() : false;
@@ -89,7 +89,7 @@ function bbloomer_add_access_ffl_assist_endpoint() {
    add_rewrite_endpoint( 'access-ffl-assist', EP_ROOT | EP_PAGES );
 }
  
-add_action( 'init', __NAMESPACE__ . '\bbloomer_add_access_ffl_assist_endpoint' );
+add_action( 'init','bbloomer_add_access_ffl_assist_endpoint' );
  
 // ------------------
 // 2. Add new query var
@@ -99,7 +99,7 @@ function bbloomer_access_ffl_assist_query_vars( $vars ) {
    return $vars;
 }
  
-add_filter( 'query_vars', __NAMESPACE__ . '\bbloomer_access_ffl_assist_query_vars', 0 );
+add_filter( 'query_vars','bbloomer_access_ffl_assist_query_vars', 0 );
  
 // ------------------
 // 3. Insert the new endpoint into the My Account menu
@@ -109,7 +109,7 @@ function bbloomer_add_access_ffl_assist_link_my_account( $items ) {
    return $items;
 }
  
-add_filter( 'woocommerce_account_menu_items', __NAMESPACE__ . '\bbloomer_add_access_ffl_assist_link_my_account' );
+add_filter( 'woocommerce_account_menu_items','bbloomer_add_access_ffl_assist_link_my_account' );
  
 // ------------------
 // 4. Add content to the new tab
@@ -119,7 +119,7 @@ function bbloomer_access_ffl_assist_content() {
   ?> <a href="#">Access System Here</a><?php
 }
  
-add_action( 'woocommerce_account_access-ffl-assist_endpoint', __NAMESPACE__ . '\bbloomer_access_ffl_assist_content' );
+add_action( 'woocommerce_account_access-ffl-assist_endpoint','bbloomer_access_ffl_assist_content' );
 // Note: add_action must follow 'woocommerce_account_{your-endpoint-slug}_endpoint' format
 
 
@@ -137,7 +137,7 @@ add_action( 'woocommerce_account_access-ffl-assist_endpoint', __NAMESPACE__ . '\
 //    functionality. 
 
 
-//  add_shortcode( 'wc_reg_form_bbloomer',  __NAMESPACE__ . '\bbloomer_separate_registration_form' );
+//  add_shortcode( 'wc_reg_form_bbloomer', 'bbloomer_separate_registration_form' );
      
  function bbloomer_separate_registration_form() {
     if ( is_user_logged_in() ) return '<p>You are already registered.</p>';
@@ -162,7 +162,7 @@ add_action( 'woocommerce_account_access-ffl-assist_endpoint', __NAMESPACE__ . '\
  * @community     https://businessbloomer.com/club/
  */
   
-//  add_shortcode( 'wc_login_form_bbloomer',  __NAMESPACE__ . '\bbloomer_separate_login_form' );
+//  add_shortcode( 'wc_login_form_bbloomer', 'bbloomer_separate_login_form' );
   
  function bbloomer_separate_login_form() {
     if ( is_user_logged_in() ) return '<p>You are already logged in</p>'; 
@@ -182,7 +182,7 @@ add_action( 'woocommerce_account_access-ffl-assist_endpoint', __NAMESPACE__ . '\
  * @description   Optionally Redirect Login & Registration Pages to My Account Page If Customer Is Logged In
  */
  
-// add_action( 'template_redirect',  __NAMESPACE__ . '\bbloomer_redirect_login_registration_if_logged_in' );
+add_action( 'template_redirect', 'bbloomer_redirect_login_registration_if_logged_in' );
  
 function bbloomer_redirect_login_registration_if_logged_in() {
     if ( is_page() && is_user_logged_in() && ( has_shortcode( get_the_content(), 'wc_login_form_bbloomer' ) || has_shortcode( get_the_content(), 'wc_reg_form_bbloomer' ) ) ) {
@@ -201,13 +201,13 @@ function disable_coupon_field_on_checkout( $enabled ) {
    }
    return $enabled;
    }
-add_filter( 'woocommerce_coupons_enabled', __NAMESPACE__ . '\disable_coupon_field_on_checkout' );
+add_filter( 'woocommerce_coupons_enabled','disable_coupon_field_on_checkout' );
 
 /**
  * @snippet       Display Coupon Form @ WooCommerce Checkout (Bottom)
  */
  
-add_action( 'woocommerce_review_order_after_submit', __NAMESPACE__ . '\bbloomer_checkout_coupon_below_payment_button' );
+add_action( 'woocommerce_review_order_after_submit','bbloomer_checkout_coupon_below_payment_button' );
 function bbloomer_checkout_coupon_below_payment_button() {
    echo '<hr>';
    woocommerce_checkout_coupon_form();
@@ -229,7 +229,7 @@ function bbloomer_checkout_coupon_below_payment_button() {
  //    (“Check this box if the coupon cannot be used in conjunction with other coupons“) 
  //    if you don’t want people to add multiple coupons to cart with different URLs
  // 
- add_action( 'wp_loaded', __NAMESPACE__ . '\bbloomer_add_coupon_to_session' );
+ add_action( 'wp_loaded','bbloomer_add_coupon_to_session' );
  
  function bbloomer_add_coupon_to_session() {  
     if ( empty( $_GET['qcode'] ) ) return;
@@ -245,7 +245,7 @@ function bbloomer_checkout_coupon_below_payment_button() {
     }
  }
   
-add_action( 'woocommerce_add_to_cart', __NAMESPACE__ . '\bbloomer_add_coupon_to_cart' );
+add_action( 'woocommerce_add_to_cart','bbloomer_add_coupon_to_cart' );
   
  function bbloomer_add_coupon_to_cart() {
     $coupon_code = WC()->session ? WC()->session->get( 'coupon_code' ) : false;
@@ -266,7 +266,7 @@ add_action( 'woocommerce_add_to_cart', __NAMESPACE__ . '\bbloomer_add_coupon_to_
  * @community     https://businessbloomer.com/club/
  */
  
- add_filter( 'woocommerce_checkout_fields', __NAMESPACE__ . '\remove_checkout_fields' );
+ add_filter( 'woocommerce_checkout_fields','remove_checkout_fields' );
   
  function remove_checkout_fields( $fields ) {
    unset($fields['billing']['billing_country']);
@@ -279,8 +279,25 @@ add_action( 'woocommerce_add_to_cart', __NAMESPACE__ . '\bbloomer_add_coupon_to_
  *   This is only applied to W/C defined shop page. 
  *   As of 1/2/25 we are using a custom page to display the shop.
  */
- add_filter('woocommerce_after_shop_loop_item_title',  __NAMESPACE__ . '\add_short_description', 2 );
+ add_filter('woocommerce_after_shop_loop_item_title', 'add_short_description', 2 );
  function add_short_description( ) {
    global $product;
    echo $product->post->post_excerpt;
  }
+
+/**
+ * @snippet       Set Free Trial Product Price to Zero so no payment methods offered at checkout. 
+ */
+add_action('woocommerce_before_calculate_totals', 'cws_set_free_trial_product_price', 10, 1);
+
+function cws_set_free_trial_product_price($cart) {
+    if (is_admin() && !defined('DOING_AJAX')) {
+        return;
+    }
+
+    foreach ($cart->get_cart() as $cart_item) {
+        if ($cart_item['product_id'] == 24666) { // 24666 is the Demo product
+            $cart_item['data']->set_price(0);
+        }
+    }
+}

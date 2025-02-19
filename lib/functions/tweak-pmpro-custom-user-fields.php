@@ -9,7 +9,7 @@
  * @link
  */
 
-namespace capweb;
+// namespace capweb;
 
 function my_pmpro_get_user_meta($user_id){
     // Don't break if PMPro is out of date or not loaded.
@@ -17,5 +17,5 @@ function my_pmpro_get_user_meta($user_id){
 		return false;
 	}
 }
-add_action( 'init', __NAMESPACE__ . '\my_pmpro_get_user_meta' );
+add_action( 'init','my_pmpro_get_user_meta' );
 

@@ -12,7 +12,7 @@
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-namespace capweb;
+// namespace capweb;
 
 function rd_duplicate_post_as_draft(){
 	global $wpdb;
@@ -107,7 +107,7 @@ function rd_duplicate_post_as_draft(){
 		wp_die('Post creation failed, could not find original post: ' . $post_id);
 	}
 }
-add_action( 'admin_action_rd_duplicate_post_as_draft', __NAMESPACE__ . '\rd_duplicate_post_as_draft' );
+add_action( 'admin_action_rd_duplicate_post_as_draft','rd_duplicate_post_as_draft' );
  
 /*
  * Add the duplicate link to action list for post_row_actions
@@ -120,5 +120,5 @@ function rd_duplicate_post_link( $actions, $post ) {
 }
  
 // Enable Duplicate option for post and pages
-add_filter( 'post_row_actions', __NAMESPACE__ . '\rd_duplicate_post_link', 10, 2 );
-add_filter( 'page_row_actions', __NAMESPACE__ . '\rd_duplicate_post_link', 10, 2 );
+add_filter( 'post_row_actions','rd_duplicate_post_link', 10, 2 );
+add_filter( 'page_row_actions','rd_duplicate_post_link', 10, 2 );

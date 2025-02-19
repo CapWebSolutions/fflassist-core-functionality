@@ -11,7 +11,7 @@
  * @copyright    Copyright (c) 2024, Matt Ryan
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-namespace capweb;
+// namespace capweb;
 
 /**	
  * Redirect non-admin users to home page on logout. 
@@ -23,34 +23,31 @@ function logout_redirect( $redirect_to, $requested_redirect, $user ) {
     }
     return $redirect_to;
 }
-add_filter( 'logout_redirect', __NAMESPACE__ . '\logout_redirect', 10, 3 );
+add_filter( 'logout_redirect','logout_redirect', 10, 3 );
 
+add_filter( 'kadence_blocks_pro_query_loop_query_vars', function( $query, $ql_query_meta, $ql_id ) {
 
-/**
- * call_update_quick_links_menu_on_login
- *
- * @param [type] $user_login
- * @param [type] $user
- * @return void
- */
-function call_update_quick_links_menu_on_login($user_login, $user) {
-    // Check if the user has the role of 'subscriber'
-    if (in_array('subscriber', (array) $user->roles)) {
-        // Check if the function has already been called during this session
-        if (!get_user_meta($user->ID, 'quick_links_menu_updated', true)) {
-            // Call the update_quick_links_menu function
-            update_quick_links_menu( $bc_meta);
-
-            // Set a user meta to indicate the function has been called
-            update_user_meta($user->ID, 'quick_links_menu_updated', true);
-        }
+    // if ( $ql_id == 24170 ) {
+    //    $query['tax_query'] = array(
+    //       array(
+    //          'taxonomy' => 'category',
+    //          'field' => 'slug',
+    //          'terms' => 'subscriber',
+    //       )
+    //    );
+    // }
+    // if ( $ql_id == 24170 ) {
+    //   $query['category__not_in'] = 37; //Subscriber category	
+    // }
+    // if ( $ql_id == 24254 ) {
+    //     $query['category_in'] = 37; //Subscriber category	
+    // }
+    if ( $ql_id == 24620 ) {  // query = Subscriber Category Query
+        error_log( '$ql_id ' . var_export( $ql_id, true ) );
+        $query['category__not_in'] = array( 1, 18, 35, 36, 38, 37) ; //Subscriber category	
+        $query['posts_per_page'] = -1;
     }
-}
-add_action('wp_login', __NAMESPACE__ . '\call_update_quick_links_menu_on_login', 10, 2);
 
-function reset_quick_links_menu_flag($user_id) {
-    // Reset the flag when the user logs out
-    delete_user_meta($user_id, 'quick_links_menu_updated');
-}
-add_action('wp_logout', __NAMESPACE__ . '\reset_quick_links_menu_flag');
-
+    return $query;
+ }, 10, 3 );
+ // Ref: https://www.kadencewp.com/help-center/docs/kadence-blocks/custom-queries-for-advanced-query-loop-block/

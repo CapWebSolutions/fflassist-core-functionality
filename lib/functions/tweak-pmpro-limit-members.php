@@ -20,7 +20,7 @@
  * https://www.paidmembershipspro.com/create-a-plugin-for-pmpro-customizations/
  */
 
-namespace capweb;
+// namespace capweb;
 /**
  * Save Level Meta for a member limit.
  */
@@ -28,7 +28,7 @@ function my_pmpro_limit_members_pmpro_save_membership_level( $save_id ) {
 	$pmpro_level_member_limit = intval( $_REQUEST['pmpro_level_member_limit'] );
 	update_pmpro_membership_level_meta( $save_id, 'pmpro_level_member_limit', $pmpro_level_member_limit );
 }
-add_action( 'pmpro_save_membership_level', __NAMESPACE__ . '\my_pmpro_limit_members_pmpro_save_membership_level', 10, 1 );
+add_action( 'pmpro_save_membership_level','my_pmpro_limit_members_pmpro_save_membership_level', 10, 1 );
 
 /**
  * Add Level Meta for a member limit.
@@ -50,7 +50,7 @@ function my_pmpro_limit_members_pmpro_membership_level_after_other_settings() {
 	</table>
 	<?php
 }
-add_action( 'pmpro_membership_level_after_other_settings', __NAMESPACE__ . '\my_pmpro_limit_members_pmpro_membership_level_after_other_settings' );
+add_action( 'pmpro_membership_level_after_other_settings','my_pmpro_limit_members_pmpro_membership_level_after_other_settings' );
 
 /**
  * Restrict checkout if the maximum number of members in a membership level has been reached.
@@ -87,7 +87,7 @@ function my_pmpro_limit_members_pmpro_registration_checks( $value ) {
 
 	return $value;
 }
-add_filter( 'pmpro_registration_checks', __NAMESPACE__ . '\my_pmpro_limit_members_pmpro_registration_checks' );
+add_filter( 'pmpro_registration_checks','my_pmpro_limit_members_pmpro_registration_checks' );
 
 /**
  * Show '0 of X spots available.' on membership checkout page if a limit is set.
@@ -129,7 +129,7 @@ function my_pmpro_show_spots_available( ) {
 	echo '</p>';
 	*/
 }
-add_action( 'pmpro_checkout_after_level_cost', __NAMESPACE__ . '\my_pmpro_show_spots_available' );
+add_action( 'pmpro_checkout_after_level_cost','my_pmpro_show_spots_available' );
 
 /**
  * Redirect away from checkout if the limit is reached.
@@ -168,7 +168,7 @@ function my_pmpro_template_redirect_no_spots_available() {
 	}
 
 }
-add_action('template_redirect', __NAMESPACE__ . '\my_pmpro_template_redirect_no_spots_available');
+add_action('template_redirect','my_pmpro_template_redirect_no_spots_available');
 
 /**
  * Hide the level from the Membership Levels page if the limit is reached.
@@ -194,7 +194,7 @@ function my_pmpro_levels_array_hide_full_levels( $levels ) {
 	// Return the filtered levels array.
 	return $newlevels;
 }
-add_filter( 'pmpro_levels_array', __NAMESPACE__ . '\my_pmpro_levels_array_hide_full_levels' );
+add_filter( 'pmpro_levels_array','my_pmpro_levels_array_hide_full_levels' );
 
 /**
  * Show the number of members in a level on the Membership Levels Settings page.
@@ -203,7 +203,7 @@ function my_pmpro_membership_levels_table_extra_cols_header_spots( $reordered_le
 	<th><?php esc_html_e( 'Spots Claimed', 'pmpro-customizations' ); ?></th>
 	<?php
 }
-// add_action( 'pmpro_membership_levels_table_extra_cols_header', __NAMESPACE__ . '\my_pmpro_membership_levels_table_extra_cols_header_spots' );
+// add_action( 'pmpro_membership_levels_table_extra_cols_header','my_pmpro_membership_levels_table_extra_cols_header_spots' );
 
 function my_pmpro_membership_levels_table_extra_cols_body_spots( $level ) {
 	// Get the maximum number of members allowed in this level.
@@ -228,7 +228,7 @@ function my_pmpro_membership_levels_table_extra_cols_body_spots( $level ) {
 	) ); 
 	echo '</td>';
 }
-add_action( 'pmpro_membership_levels_table_extra_cols_body', __NAMESPACE__ . '\my_pmpro_membership_levels_table_extra_cols_body_spots' );
+add_action( 'pmpro_membership_levels_table_extra_cols_body','my_pmpro_membership_levels_table_extra_cols_body_spots' );
 
 /**
  * Get the count of active members in a level.

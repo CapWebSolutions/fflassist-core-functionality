@@ -17,7 +17,7 @@
  * @link       https://github.com/TGMPA/TGM-Plugin-Activation
  */
  
-namespace capweb;
+// namespace capweb;
 
 /**
  * Include the TGM_Plugin_Activation class.
@@ -37,7 +37,7 @@ namespace capweb;
 
 require CORE_FUNCTIONALITY_PLUGIN_DIR . 'includes/class-tgm-plugin-activation.php';
 
-add_action( 'tgmpa_register',  __NAMESPACE__ . '\register_required_plugins' );
+add_action( 'tgmpa_register', 'register_required_plugins' );
 
 /**
  * Register the required plugins for this theme.

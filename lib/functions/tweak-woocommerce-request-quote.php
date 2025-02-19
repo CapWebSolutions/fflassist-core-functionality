@@ -12,10 +12,9 @@
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
- namespace capweb;
+// namespace capweb;
 
-add_action( 'woocommerce_after_add_to_cart_form', __NAMESPACE__ . '\fflassist_woocommerce_gf_single_product', 30 );
-
+add_action( 'woocommerce_after_add_to_cart_form','fflassist_woocommerce_gf_single_product', 30 );
 
 function fflassist_woocommerce_gf_single_product() {
    global $product;
@@ -50,4 +49,4 @@ function remove_add_to_cart_button() {
       // @TODO need different hook to remove just the add to cart button
    }
 }
-add_action( 'woocommerce_before_single_product', __NAMESPACE__ . '\remove_add_to_cart_button' );
+add_action( 'woocommerce_before_single_product','remove_add_to_cart_button' );

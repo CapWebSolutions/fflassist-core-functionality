@@ -11,17 +11,17 @@
  * @copyright    Copyright (c) 2024, Matt Ryan
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-namespace capweb;
+// namespace capweb;
 
 /**
  * Detect if Gravity Forms plugin active. 
  */
 // if ( is_plugin_active( 'gravityforms/gravityforms.php' ) ) {
 //     // Turn_off_gravity_forms_admin_notice
-//     add_action(	'gform_loaded', __NAMESPACE__ . '\turn_off_gravity_forms_admin_notice');
+//     add_action(	'gform_loaded','turn_off_gravity_forms_admin_notice');
 
 //     // Add validation for form 1
-//     add_filter('gform_validation_1',   __NAMESPACE__ . '\validate_wp_user_id_field');
+//     add_filter('gform_validation_1',  'validate_wp_user_id_field');
 // }
 
 /**
