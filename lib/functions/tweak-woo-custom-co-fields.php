@@ -97,15 +97,7 @@ function bbloomer_validate_new_checkout_field() {
      if ( get_post_meta( $order->get_id(), '_license_no', true ) ) echo '<p><strong>FFL License Number:</strong> ' . get_post_meta( $order->get_id(), '_license_no', true ) . '</p>';
  }
  
-// Add ATF license to user's meta data.
-//  add_action( 'woocommerce_checkout_update_order_meta', 'save_ffl_license_to_user_meta', 11 );
-//  function save_ffl_license_to_user_meta( $order_id ) {
-//    $user_id = $order->get_user_id();
-//    $license_no = get_post_meta( $order_id, '_license_no', true );
-//    if ( $license_no ) update_user_meta( $user_id, $license_no );
-// }
-
- /**
+/**
  * @snippet       Edit Custom Field @ Woo Edit Order Page
  * @how-to        businessbloomer.com/woocommerce-customization
  * @author        Rodolfo Melogli, Business Bloomer
@@ -161,14 +153,3 @@ function save_license_no_to_user_meta($order_id) {
     }
 }
 
-
-// New snippet to add custom field to my-account page on woocommerce.
-add_filter('woocommerce_account_dashboard', 'cws_add_ffl_license_no_to_my_account');
-function cws_add_ffl_license_no_to_my_account( $user_id ) {
-   $atf_ffl_number = 'Unassigned';
-   if ( is_user_logged_in() ) {
-      $user_id = get_current_user_id();
-      $atf_ffl_number = get_user_meta( $user_id, 'bc_atf_ffl_number', true );
-   }
-   echo '<p><strong>ATF FFL Number:</strong> ' . $atf_ffl_number . '</p>';
-}
