@@ -12,16 +12,8 @@
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-//  // namespace capweb;
-
-/**
- * Detect if Woo plugin active. 
- */
-// if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) return;
-
-//plugin is activated - set up all filters
-    
-
+  
+// Remove the product count from the shop page
 remove_action( 'woocommerce_before_shop_loop', 'woocommerce_result_count', 20 );
 remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30 );
 
@@ -55,72 +47,6 @@ function bbloomer_remove_metaboxes_edit_product() {
    // e.g. remove post settings
    remove_meta_box( '_kad_classic_meta_control', 'product', 'side' );
 }
-
- /**
- * @snippet       Hide Downloads Tab @ My Account Page
- * @how-to        businessbloomer.com/woocommerce-customization
- * @author        Rodolfo Melogli, Business Bloomer
- * @compatible    WooCommerce 9
- * @community     https://businessbloomer.com/club/
- */
- 
-add_filter( 'woocommerce_account_menu_items','bbloomer_hide_downloads_tab_my_account', 9999 );
- 
-function bbloomer_hide_downloads_tab_my_account( $items ) {
-    $downloads = ! empty( WC()->customer ) ? WC()->customer->get_downloadable_products() : false;
-    $has_downloads = (bool) $downloads;
-    if ( ! $has_downloads ) unset( $items['downloads'] );
-    return $items;
-}
-
-/**
- * @snippet       WooCommerce Add New Tab @ My Account
- * @how-to        businessbloomer.com/woocommerce-customization
- * @author        Rodolfo Melogli, Business Bloomer
- * @compatible    WooCommerce 5.0
- * @community     https://businessbloomer.com/club/
- */
-  
-// ------------------
-// 1. Register new endpoint (URL) for My Account page
-// Note: Re-save Permalinks or it will give 404 error
-  
-function bbloomer_add_access_ffl_assist_endpoint() {
-   add_rewrite_endpoint( 'access-ffl-assist', EP_ROOT | EP_PAGES );
-}
- 
-add_action( 'init','bbloomer_add_access_ffl_assist_endpoint' );
- 
-// ------------------
-// 2. Add new query var
- 
-function bbloomer_access_ffl_assist_query_vars( $vars ) {
-   $vars[] = 'access-ffl-assist';
-   return $vars;
-}
- 
-add_filter( 'query_vars','bbloomer_access_ffl_assist_query_vars', 0 );
- 
-// ------------------
-// 3. Insert the new endpoint into the My Account menu
- 
-function bbloomer_add_access_ffl_assist_link_my_account( $items ) {
-   $items['access-ffl-assist'] = 'Access FFL Assist';
-   return $items;
-}
- 
-add_filter( 'woocommerce_account_menu_items','bbloomer_add_access_ffl_assist_link_my_account' );
- 
-// ------------------
-// 4. Add content to the new tab
- 
-function bbloomer_access_ffl_assist_content() {
-  echo '<h3>Access FFL Assist System</h3><p>Welcome to the FFL Assist launch page.</p>';
-  ?> <a href="#">Access System Here</a><?php
-}
- 
-add_action( 'woocommerce_account_access-ffl-assist_endpoint','bbloomer_access_ffl_assist_content' );
-// Note: add_action must follow 'woocommerce_account_{your-endpoint-slug}_endpoint' format
 
 
 /* ======================================================================================================== */
@@ -182,7 +108,7 @@ add_action( 'woocommerce_account_access-ffl-assist_endpoint','bbloomer_access_ff
  * @description   Optionally Redirect Login & Registration Pages to My Account Page If Customer Is Logged In
  */
  
-add_action( 'template_redirect', 'bbloomer_redirect_login_registration_if_logged_in' );
+// add_action( 'template_redirect', 'bbloomer_redirect_login_registration_if_logged_in' );
  
 function bbloomer_redirect_login_registration_if_logged_in() {
     if ( is_page() && is_user_logged_in() && ( has_shortcode( get_the_content(), 'wc_login_form_bbloomer' ) || has_shortcode( get_the_content(), 'wc_reg_form_bbloomer' ) ) ) {
