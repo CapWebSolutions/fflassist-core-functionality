@@ -95,19 +95,6 @@ function remove_menus() {
 }
 add_action( 'admin_menu','remove_menus' );
 
-/**
- * 04. Customize Admin Bar Items
- *
- * @since 1.0.0
- * @link http://wp-snippets.com/addremove-wp-admin-bar-links/
- */
-function admin_bar_items() {
-	global $wp_admin_bar;
-	$wp_admin_bar->remove_menu( 'new-link', 'new-content' );
-}
-add_action( 'wp_before_admin_bar_render','admin_bar_items' );
-
-
 // Remove theme and plugin editor links
 add_action( 'admin_init','hide_editor_and_tools' );
 function hide_editor_and_tools() {
@@ -191,8 +178,3 @@ function on_specific_admin_page() {
 
     return false;
 }
-    if ( function_exists( 'add_theme_support' ) && ( on_specific_admin_page() ) ) {
-        add_filter( 'manage_posts_columns' ,'add_thumbnail_columns' );
-        add_action( 'manage_posts_custom_column' ,'add_thumbnail_columns_data', 10, 2 );
-    }
-
