@@ -12,10 +12,6 @@
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-
-//  // namespace capweb;
- 
-// Auto Add Alt Tags
 /* Automatically set the image Title, Alt-Text, Caption & Description upon upload
 --------------------------------------------------------------------------------------*/
 add_action( 'add_attachment','set_image_meta_upon_image_upload' );
