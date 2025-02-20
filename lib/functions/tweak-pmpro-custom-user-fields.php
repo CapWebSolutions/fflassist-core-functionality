@@ -9,8 +9,6 @@
  * @link
  */
 
-// namespace capweb;
-
 function my_pmpro_get_user_meta($user_id){
     // Don't break if PMPro is out of date or not loaded.
 	if ( ! function_exists( 'pmpro_add_user_field' ) ) {
