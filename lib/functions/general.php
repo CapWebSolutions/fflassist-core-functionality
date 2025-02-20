@@ -23,7 +23,7 @@ function logout_redirect( $redirect_to, $requested_redirect, $user ) {
     }
     return $redirect_to;
 }
-add_filter( 'logout_redirect','logout_redirect', 10, 3 );
+// add_filter( 'logout_redirect','logout_redirect', 10, 3 );
 
 add_filter( 'kadence_blocks_pro_query_loop_query_vars', function( $query, $ql_query_meta, $ql_id ) {
 
@@ -51,3 +51,31 @@ add_filter( 'kadence_blocks_pro_query_loop_query_vars', function( $query, $ql_qu
     return $query;
  }, 10, 3 );
  // Ref: https://www.kadencewp.com/help-center/docs/kadence-blocks/custom-queries-for-advanced-query-loop-block/
+
+ /**
+ *  Add nonce to logout URL in navigation
+ *  @link https://barebones.dev/articles/add-wordpress-nonce-to-log-out-link/
+ * 
+ *  This snippet handles issues with the logout link in the navigation menu. 
+ *   Without it the visitor is presented with a confirmation screen to log out.  
+ */
+
+function cws_add_logout_url_nonce($items){
+    foreach($items as $item){
+        error_log( print_r( (object)
+            [
+                'file' => __FILE__,
+                'method' => __METHOD__,
+                'line' => __LINE__,
+                'dump' => [
+                    $item,
+                ],
+            ], true ) );
+      if( $item->url == '/wp-login.php?action=logout'){
+           $item->url = $item->url . '?redirect_url=/&_wpnonce=' . wp_create_nonce( 'log-out' );
+      }
+    }
+    return $items;
+  
+  }
+  add_filter('wp_nav_menu_objects', 'cws_add_logout_url_nonce', 11 );
