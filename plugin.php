@@ -3,7 +3,7 @@
  * Plugin Name: FFLAssist Core Functionality
  * Plugin URI: https://github.com/CapWebSolutions/fflassist-core-functionality
  * Description: This contains core functionality for FFLAssist so that it is theme independent. It should remain activated.
- * Version: 1.2.1
+ * Version: 1.2.2
  * Author: Cap Web Solutions
  * Author URI: https://capwebsolutions.com
  * GitHub Plugin URI: https://github.com/CapWebSolutions/fflassist-core-functionality
@@ -52,6 +52,15 @@ function enqueue_core_scripts_and_styles() {
 		CORE_FUNCTIONALITY_PLUGIN_VERSION, 
 		'all' 
 	);
+	error_log( print_r( (object)
+		[
+			'file' => __FILE__,
+			'method' => __METHOD__,
+			'line' => __LINE__,
+			'dump' => [
+				trailingslashit( plugins_url('assets', __FILE__) ) . 'css/core-functionality.css',
+			],
+		], true ) );
 }
 add_action( 'wp_enqueue_scripts','enqueue_core_scripts_and_styles' );
 
