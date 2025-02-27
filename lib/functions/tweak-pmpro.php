@@ -244,3 +244,30 @@ function my_pmpro_login_redirect_url( $redirect_to, $request, $user ) {
 	}
 }
 add_action( 'wp_logout', 'my_pmpro_redirect_members_on_logout' );
+
+
+/**
+ * This recipe removes the "Join Now" registration link on the login page.
+ *
+ * This link is shown only when the "Membership  [ ] Anyone can register" option was set
+ * on the WordPress dashboard under Settings > General. To remove the "Join Now" link
+ * may also be achieved through deactivating this option if all users are required
+ * to be a member.
+ *
+ * You can add this recipe to your site by creating a custom plugin
+ * or using the Code Snippets plugin available for free in the WordPress repository.
+ * Read this companion article for step-by-step directions on either method.
+ * https://www.paidmembershipspro.com/create-a-plugin-for-pmpro-customizations/
+ */
+function my_pmpro_login_forms_handler_nav( $links ) {
+	global $pmpro_pages;
+
+	// bail if not on login page.
+	if ( ! is_page( $pmpro_pages['login'] ) ) {
+		return $links;
+	}
+
+	unset( $links['register'] );
+	return $links;
+}
+add_filter( 'pmpro_login_forms_handler_nav', 'my_pmpro_login_forms_handler_nav' );
