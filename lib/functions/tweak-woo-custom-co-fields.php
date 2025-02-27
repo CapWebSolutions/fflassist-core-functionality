@@ -56,7 +56,7 @@ function bbloomer_validate_new_checkout_field() {
    }
 
    // Reformat and validate the license number entered. 
-   if ( ! is_ffl_code_valid( $_POST['_license_no'] ) ) {
+   if ( ! capweb_is_ffl_code_valid( $_POST['_license_no'] ) ) {
       wc_add_notice( 'Invalid FFL Number entered or license is not available to FFLAssist. Please enter a valid FFL Licence Number or <a href="/contact" _target=_blank">Contact us</a>.', 'error' );
    }
 }
@@ -153,3 +153,58 @@ function save_license_no_to_user_meta($order_id) {
     }
 }
 
+/**
+ * @snippet       Populate Fields Via URL @ WooCommerce Checkout - Used to provide part of copy/paste functionality for FFL validation.
+ * @how-to        businessbloomer.com/woocommerce-customization
+ * @author        Rodolfo Melogli, Business Bloomer
+ */
+ 
+ add_filter( 'woocommerce_add_cart_item_data', 'bbloomer_save_custom_data_in_cart_object', 9999, 3 );
+ 
+ function bbloomer_save_custom_data_in_cart_object( $cart_item_data, $product_id, $variation_id ) {
+    $topopulate = array(
+       'lic' => '_license_no',
+     );
+     foreach ( $topopulate as $urlparam => $checkout_field ) {         
+         if ( isset( $_GET[$urlparam] ) && ! empty( $_GET[$urlparam] ) ) {
+           $cart_item_data[$checkout_field] = esc_attr( $_GET[$urlparam] );
+       }
+    }
+     return $cart_item_data;
+ }
+  
+ add_filter( 'woocommerce_checkout_fields' , 'bbloomer_populate_checkout', 9999 );
+    
+ function bbloomer_populate_checkout( $fields ) {
+     $topopulate = array(
+       'lic' => '_license_no',
+     );
+    foreach ( WC()->cart->get_cart() as $cart_item ) {
+       foreach ( $topopulate as $urlparam => $checkout_field ) {
+          if ( isset( $cart_item[$checkout_field] ) && ! empty( $cart_item[$checkout_field] ) ) {
+            //  switch ( substr( $checkout_field, 0, 7 ) ) {
+            //     case 'billing':
+            //        $fields['billing'][$checkout_field]['default'] = $cart_item[$checkout_field];
+            //        break;
+            //     case 'shippin':
+            //        $fields['shipping'][$checkout_field]['default'] = $cart_item[$checkout_field];
+            //        break;
+            //  }
+            error_log( print_r( (object)
+               [
+                  'file' => __FILE__,
+                  'method' => __METHOD__,
+                  'line' => __LINE__,
+                  'dump' => [
+                     $cart_item,
+                     $checkout_field,
+                     $cart_item[$checkout_field],
+                  ],
+               ], true ) );
+          }
+           
+         }
+     }       
+     return $fields;
+ }
+ 
