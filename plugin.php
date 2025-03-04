@@ -52,15 +52,6 @@ function enqueue_core_scripts_and_styles() {
 		CORE_FUNCTIONALITY_PLUGIN_VERSION, 
 		'all' 
 	);
-	error_log( print_r( (object)
-		[
-			'file' => __FILE__,
-			'method' => __METHOD__,
-			'line' => __LINE__,
-			'dump' => [
-				trailingslashit( plugins_url('assets', __FILE__) ) . 'css/core-functionality.css',
-			],
-		], true ) );
 }
 add_action( 'wp_enqueue_scripts','enqueue_core_scripts_and_styles' );
 

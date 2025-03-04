@@ -62,15 +62,6 @@ add_filter( 'kadence_blocks_pro_query_loop_query_vars', function( $query, $ql_qu
 
 function cws_add_logout_url_nonce($items){
     foreach($items as $item){
-        error_log( print_r( (object)
-            [
-                'file' => __FILE__,
-                'method' => __METHOD__,
-                'line' => __LINE__,
-                'dump' => [
-                    $item,
-                ],
-            ], true ) );
       if( $item->url == '/wp-login.php?action=logout'){
            $item->url = $item->url . '?redirect_url=/&_wpnonce=' . wp_create_nonce( 'log-out' );
       }
