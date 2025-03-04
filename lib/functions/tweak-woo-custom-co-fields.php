@@ -33,7 +33,7 @@ add_action( 'woocommerce_before_checkout_billing_form', 'bbloomer_add_custom_che
        'type' => 'text',        
        'class' => array( 'form-row-wide' ),        
        'label' => 'FFL License Number',        
-       'placeholder' => 'x-xx-xxx-xx-xx-xxxxx',        
+       'placeholder' => FFL_LICENSE_PLACEHOLDER,        
        'required' => true,        
        'default' => $saved_license_no,
        'description' => "Enter license number with or without '-'. All characters required."        
