@@ -16,6 +16,6 @@ Selects the first paragraph by using the '>' for specificity.  */
 	font-size: 20px;
 }
 #main-header a.header-account-button:hover {
-	color: rgb(13,242,5);
+	color: rgb(13,242,50);
 }
 /* End: PMPRo login/out on main nav heading */

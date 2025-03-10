@@ -20,7 +20,6 @@
  * https://www.paidmembershipspro.com/create-a-plugin-for-pmpro-customizations/
  */
 
-// namespace capweb;
 /**
  * Save Level Meta for a member limit.
  */
