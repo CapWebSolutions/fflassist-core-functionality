@@ -11,7 +11,6 @@
  * @copyright    Copyright (c) 2024, Matt Ryan
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-// namespace capweb;
 
 /**
  * Detect if Gravity Forms plugin active. 
@@ -50,32 +49,32 @@ function validate_wp_user_id_field( $validation_result ){
     // validate that entry is an existing WP User ID 
     // For Form ID 6 - validate field 1
     //
-        if( !is_wp_user_id_valid( $_POST['input_1']  ) ){
+        if ( isset( $_POST['input_1'] ) && !is_wp_user_id_valid( $_POST['input_1'] ) ) {
             $validation_result['is_valid'] = false;
-            foreach($validation_result['form']['fields'] as &$field){
+            foreach ( $validation_result['form']['fields'] as &$field ) {
             // field 1 is the field we are validating  
-                if($field['id'] == 1){
-                    $field['failed_validation'] = true;
-                    $field['validation_message'] = 'The user ID is not valid. Please try again.';
-                    break;
-                }
+            if ( $field['id'] == 1 ) {
+                $field['failed_validation'] = true;
+                $field['validation_message'] = 'The user ID is not valid. Please try again.';
+                break;
+            }
             }
         }
         return $validation_result;
     }
 
-    function is_wp_user_id_valid( $user ) {
+    function is_wp_user_id_valid( $user_id ) {
         global $wpdb;
-    
+
         // Prepare the SQL statement
-        $query = $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->users WHERE ID = %d", $user, $user );
+        $query = $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->users WHERE ID = %d", $user_id );
 
         // Execute the query
-        $result = $wpdb->get_row($query, ARRAY_A);
+        $result = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->users WHERE ID = %d", $user_id ) );
 
         // Check if a result was found
-        if ( $result ) {
-            return $result;
+        if ( $result > 0 ) {
+            return true;
         } else {
             return false;
         }

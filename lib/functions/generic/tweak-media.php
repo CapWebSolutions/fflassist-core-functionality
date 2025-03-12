@@ -49,17 +49,19 @@ function set_image_meta_upon_image_upload( $post_ID ) {
 
 // Set default featured image if none is set
 function set_default_featured_image( $html, $post_id, $post_thumbnail_id, $size, $attr ) {
-    if ( empty( $post_thumbnail_id ) ) {
-        $default_image_url = '/wp-content/uploads/2024/10/fflassist-with-checkmark.png';
-        $html = '<img src="' . esc_url( $default_image_url ) . '" class="wp-post-image" alt="Default Image"/>';
-    }
-    return $html;
+	if ( empty( $post_thumbnail_id ) && empty( $html ) ) {
+		$upload_dir = wp_get_upload_dir();
+		$default_image_url = $upload_dir['baseurl'] . '/2024/10/fflassist-with-checkmark.png';
+		$html = '<img src="' . esc_url( $default_image_url ) . '" class="wp-post-image" alt="Default Image"/>';
+	}
+	return $html;
 }
 add_filter( 'post_thumbnail_html','set_default_featured_image', 10, 5 );
  
 function set_default_featured_image_url( $url, $post_id ) {
     if ( empty( get_post_thumbnail_id( $post_id ) ) ) {
-        $url = '/wp-content/uploads/2024/10/fflassist-with-checkmark.png';
+		$upload_dir = wp_get_upload_dir();
+		$url = $upload_dir['baseurl'] . '/2024/10/fflassist-with-checkmark.png';
     }
     return $url;
 }

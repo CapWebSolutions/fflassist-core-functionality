@@ -71,31 +71,37 @@ function bbloomer_validate_new_checkout_field() {
  
  add_action( 'woocommerce_checkout_update_order_meta', 'bbloomer_save_new_checkout_field' );
   
- function bbloomer_save_new_checkout_field( $order_id ) { 
-   $license_no = $_POST['_license_no'];
-     if ( $license_no ) {
-      $add_license_no = update_post_meta( $order_id, '_license_no', $license_no );
-     }
- }
-  
- add_action( 'woocommerce_thankyou','bbloomer_show_new_checkout_field_thankyou' );
-    
- function bbloomer_show_new_checkout_field_thankyou( $order_id ) {    
-    if ( get_post_meta( $order_id, '_license_no', true ) ) echo '<p><strong>FFL License Number:</strong> ' . get_post_meta( $order_id, '_license_no', true ) . '</p>';
- }
-   
- add_action( 'woocommerce_admin_order_data_after_billing_address', 'bbloomer_show_new_checkout_field_order' );
-    
- function bbloomer_show_new_checkout_field_order( $order ) {    
-    $order_id = $order->get_id();
-    if ( get_post_meta( $order_id, '_license_no', true ) ) echo '<p><strong>License Number:</strong> ' . get_post_meta( $order_id, '_license_no', true ) . '</p>';
- }
-  
- add_action( 'woocommerce_email_after_order_table', 'bbloomer_show_new_checkout_field_emails', 20, 4 );
-   
- function bbloomer_show_new_checkout_field_emails( $order, $sent_to_admin, $plain_text, $email ) {
-     if ( get_post_meta( $order->get_id(), '_license_no', true ) ) echo '<p><strong>FFL License Number:</strong> ' . get_post_meta( $order->get_id(), '_license_no', true ) . '</p>';
- }
+function bbloomer_save_new_checkout_field( $order_id ) { 
+   $license_no = sanitize_text_field( $_POST['_license_no'] );
+   if ( $license_no ) {
+      update_post_meta( $order_id, '_license_no', $license_no );
+   }
+}
+
+add_action( 'woocommerce_thankyou', 'bbloomer_show_new_checkout_field_thankyou' );
+
+function bbloomer_show_new_checkout_field_thankyou( $order_id ) {    
+   if ( get_post_meta( $order_id, '_license_no', true ) ) {
+      echo '<p><strong>FFL License Number:</strong> ' . esc_html( get_post_meta( $order_id, '_license_no', true ) ) . '</p>';
+   }
+}
+
+add_action( 'woocommerce_admin_order_data_after_billing_address', 'bbloomer_show_new_checkout_field_order' );
+
+function bbloomer_show_new_checkout_field_order( $order ) {    
+   $order_id = $order->get_id();
+   if ( get_post_meta( $order_id, '_license_no', true ) ) {
+      echo '<p><strong>License Number:</strong> ' . esc_html( get_post_meta( $order_id, '_license_no', true ) ) . '</p>';
+   }
+}
+
+add_action( 'woocommerce_email_after_order_table', 'bbloomer_show_new_checkout_field_emails', 20, 4 );
+
+function bbloomer_show_new_checkout_field_emails( $order, $sent_to_admin, $plain_text, $email ) {
+   if ( get_post_meta( $order->get_id(), '_license_no', true ) ) {
+      echo '<p><strong>FFL License Number:</strong> ' . esc_html( get_post_meta( $order->get_id(), '_license_no', true ) ) . '</p>';
+   }
+}
  
 /**
  * @snippet       Edit Custom Field @ Woo Edit Order Page
@@ -107,7 +113,7 @@ add_action( 'woocommerce_admin_order_data_after_billing_address','bbloomer_order
  
 function bbloomer_order_custom_field_input( $order ) {
    echo '<div class="address">'; // REQUIRED!
-   echo '<p><b>ATF FFL Number:</b> ' . $order->get_meta( '_license_no' ) . '</p>';
+   echo '<p><b>ATF FFL Number:</b> ' . esc_html( $order->get_meta( '_license_no' ) ) . '</p>';
    echo '</div>';
    echo '<div class="edit_address">'; // REQUIRED!
    woocommerce_wp_text_input(

@@ -48,75 +48,6 @@ function bbloomer_remove_metaboxes_edit_product() {
    remove_meta_box( '_kad_classic_meta_control', 'product', 'side' );
 }
 
-
-/* ======================================================================================================== */
-/* https://www.businessbloomer.com/woocommerce-separate-login-registration/ */
-/**
- * @snippet       WooCommerce User Registration Shortcode
- * @how-to        businessbloomer.com/woocommerce-customization
- * @author        Rodolfo Melogli, Business Bloomer
- * @compatible    WooCommerce 9
- * @community     https://businessbloomer.com/club/
- */
-
-// 12/02/2024 - 10:38 -> Remove this stuff in favor of using PMPro for all this membership 
-//    functionality. 
-
-
-//  add_shortcode( 'wc_reg_form_bbloomer', 'bbloomer_separate_registration_form' );
-     
- function bbloomer_separate_registration_form() {
-    if ( is_user_logged_in() ) return '<p>You are already registered.</p>';
-    ob_start();
-    do_action( 'woocommerce_before_customer_login_form' );
-    $html = wc_get_template_html( 'myaccount/form-login.php' );
-    $dom = new DOMDocument();
-    $dom->encoding = 'utf-8';
-    $dom->loadHTML( utf8_decode( $html ) );
-    $xpath = new DOMXPath( $dom );
-    $form = $xpath->query( '//form[contains(@class,"register")]' );
-    $form = $form->item( 0 );
-    echo $dom->saveHTML( $form );
-    return ob_get_clean();
- }
- 
-/**
- * @snippet       WooCommerce User Login Shortcode
- * @how-to        businessbloomer.com/woocommerce-customization
- * @author        Rodolfo Melogli, Business Bloomer
- * @compatible    WooCommerce 9
- * @community     https://businessbloomer.com/club/
- */
-  
-//  add_shortcode( 'wc_login_form_bbloomer', 'bbloomer_separate_login_form' );
-  
- function bbloomer_separate_login_form() {
-    if ( is_user_logged_in() ) return '<p>You are already logged in</p>'; 
-    ob_start();
-    do_action( 'woocommerce_before_customer_login_form' );
-    woocommerce_login_form( array( 'redirect' => wc_get_page_permalink( 'myaccount' ) ) );
-    return ob_get_clean();
- }
- 
-
- /**
- * @snippet       Redirect Login/Registration to My Account
- * @how-to        businessbloomer.com/woocommerce-customization
- * @author        Rodolfo Melogli, Business Bloomer
- * @compatible    WooCommerce 9
- * @community     https://businessbloomer.com/club/
- * @description   Optionally Redirect Login & Registration Pages to My Account Page If Customer Is Logged In
- */
- 
-// add_action( 'template_redirect', 'bbloomer_redirect_login_registration_if_logged_in' );
- 
-function bbloomer_redirect_login_registration_if_logged_in() {
-    if ( is_page() && is_user_logged_in() && ( has_shortcode( get_the_content(), 'wc_login_form_bbloomer' ) || has_shortcode( get_the_content(), 'wc_reg_form_bbloomer' ) ) ) {
-        wp_safe_redirect( wc_get_page_permalink( 'myaccount' ) );
-        exit;
-    }
-}
-
 /**
  * @snippet       Remove Coupon Form @ WooCommerce Cart 
  *                This removes UI AND functionality. 
@@ -208,7 +139,7 @@ add_action( 'woocommerce_add_to_cart','bbloomer_add_coupon_to_cart' );
  add_filter('woocommerce_after_shop_loop_item_title', 'add_short_description', 2 );
  function add_short_description( ) {
    global $product;
-   echo $product->post->post_excerpt;
+   echo esc_html($product->post->post_excerpt);
  }
 
 /**

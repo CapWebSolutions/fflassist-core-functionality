@@ -88,7 +88,7 @@ function bbloomer_purchase_history_title( $title ) {
                  echo '<td>' . esc_html( wc_format_datetime( $order->get_date_created() ) ) . '</td>';
                  echo '<td>';
                  if ( ! in_array( $product->get_id(), $reviewed_products ) ) {
-                     echo '<a class="button alt" href="' . esc_url( get_permalink( $product->get_id() ) . '#tab-reviews' ) . '">' . esc_html__( 'Add a review', 'woocommerce' ) . '</a> ';
+                     echo '<a class="button alt" href="' . esc_url( get_permalink( $product->get_id() ) . '#tab-reviews' ) . '">' . esc_html__( 'Add a review', 'fflassist-core-functionality' ) . '</a> ';
                  }
                  echo '</td>';
                  echo '</tr>';
