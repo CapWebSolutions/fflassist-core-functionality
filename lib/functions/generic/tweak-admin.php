@@ -83,15 +83,17 @@ add_filter( 'menu_order','custom_menu_order' );
  * See the commented list of menu items for reference.
  */
 function remove_menus() {
-	global $menu;
-	$restricted = array( __( 'Links' ) );
-	// Example:
-	// $restricted = array(__('Dashboard'), __('Posts'), __('Media'), __('Links'), __('Pages'), __('Appearance'), __('Tools'), __('Users'), __('Settings'), __('Comments'), __('Plugins'));
-	end( $menu );
-	while ( prev( $menu ) ) {
-		$value = explode( ' ',$menu[ key( $menu ) ][0] );
-		if ( in_array( $value[0] != null?$value[0]:'' , $restricted ) ) {unset( $menu[ key( $menu ) ] );}
-	}
+    global $menu;
+    $restricted = array( __( 'Links', 'fflassist-core-functionality' ) );
+    // Example:
+    // $restricted = array(__('Dashboard'), __('Posts'), __('Media'), __('Links'), __('Pages'), __('Appearance'), __('Tools'), __('Users'), __('Settings'), __('Comments'), __('Plugins'));
+    end( $menu );
+    while ( prev( $menu ) ) {
+        $value = explode( ' ', $menu[ key( $menu ) ][0] ?? '' );
+        if ( in_array( $value[0] ?? '', $restricted ) ) {
+            unset( $menu[ key( $menu ) ] );
+        }
+    }
 }
 add_action( 'admin_menu','remove_menus' );
 
@@ -124,28 +126,30 @@ add_action( 'admin_bar_menu','change_howdy_greeting', 10 );
 
  add_image_size( 'admin-list-thumb', 80, 80, false );
 
- function add_thumbnail_columns( $columns ) {
-        if ( !is_array( $columns ) )
-            $columns = array();
-        $new = array();
-    
-        foreach( $columns as $key => $title ) {
-            if ( $key == 'title' ) // Put the Thumbnail column before the Title column
-                $new['featured_thumb'] = __( 'Image');
-            $new[$key] = $title;
+function add_thumbnail_columns( $columns ) {
+    if ( ! is_array( $columns ) ) {
+        $columns = array();
+    }
+    $new_columns = array();
+
+    foreach ( $columns as $key => $title ) {
+        if ( 'title' === $key ) { // Put the Thumbnail column before the Title column
+            $new_columns['featured_thumb'] = __( 'Image', 'fflassist-core-functionality' );
         }
-        return $new;
- }
+        $new_columns[ $key ] = $title;
+    }
+    return $new_columns;
+}
  
- function add_thumbnail_columns_data( $column, $post_id ) {
-     switch ( $column ) {
-     case 'featured_thumb':
-         echo '<a href="' . $post_id . '">';
-         echo the_post_thumbnail( 'admin-list-thumb' );
-         echo '</a>';
-         break;
-     }
- }
+function add_thumbnail_columns_data( $column, $post_id ) {
+    switch ( $column ) {
+        case 'featured_thumb':
+            echo '<a href="' . esc_url( get_edit_post_link( $post_id ) ) . '">';
+            echo get_the_post_thumbnail( $post_id, 'admin-list-thumb' );
+            echo '</a>';
+            break;
+    }
+}
 
  /**
   * on_specific_admin_page

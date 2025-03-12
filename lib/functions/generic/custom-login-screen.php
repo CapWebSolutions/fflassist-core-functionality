@@ -12,7 +12,6 @@
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-// namespace capweb;
  /**
  * Customize login screen with site logo replacing WordPress logo.
  *   New logo placed in the assets/images folder within Core Functionality plugin 
@@ -35,11 +34,11 @@ function login_logo() {
     $default_image = $default_image_plugin_svg;
     $default_image_background = $default_image_media_library;
 
-	?>
+    ?>
     <style type="text/css">
         #login h1 a, 
         .login h1 a {
-            background-image: url(<?php echo $default_image ?>);
+            background-image: url(<?php echo esc_url($default_image); ?>);
             height:65px;
             width:320px;
             background-size: 320px 65px;
@@ -50,7 +49,7 @@ function login_logo() {
         body.login {
             /* background: rgb(84,110,145); */
             /* background: radial-gradient(circle, rgba(84,110,145,1) 0%, rgba(156,156,156,1) 100%); */
-            background-image: url(<?php echo $default_image_background ?>);
+            background-image: url(<?php echo esc_url($default_image_background); ?>);
         }
         #login p#nav a,
         #login p#backtoblog a,
@@ -62,7 +61,7 @@ function login_logo() {
             background-color: #29A632 !important;
         }
     </style>
-	<?php 
+    <?php 
 }
 
 add_action( 'login_enqueue_scripts','login_logo' );
@@ -72,7 +71,7 @@ add_action( 'login_enqueue_scripts','login_logo' );
  * 
  */
 function login_logo_url() {
-    return home_url();
+    return esc_url(home_url());
 }
 add_filter( 'login_headerurl','login_logo_url' );
   
@@ -80,6 +79,6 @@ add_filter( 'login_headerurl','login_logo_url' );
  * Grab the name of the site. 
  */
 function login_logo_url_text() {
-    return get_bloginfo( $show = 'name', $filter = 'raw' );
+    return esc_html(get_bloginfo( 'name', 'raw' ));
 }
 add_filter( 'login_headertext','login_logo_url_text' );

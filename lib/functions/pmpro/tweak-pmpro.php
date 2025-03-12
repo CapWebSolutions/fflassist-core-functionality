@@ -11,7 +11,6 @@
  * @copyright    Copyright (c) 2024, Matt Ryan
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-// namespace capweb;
 
 // Create myloginbutton shortcode. 
 // Shortcode [myloginbutton] it adds a login / out button.
@@ -25,7 +24,7 @@ function shortcode_forstuff() {
     <?php if (is_user_logged_in()) : ?>
         <div class="kt-inside-inner-col">
             <div class="wp-block-kadence-advancedbtn kb-buttons-wrap">
-                <a class="kb-button kt-button button kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-inherit kt-btn-has-text-true kt-btn-has-svg-false wp-block-button__link wp-block-kadence-singlebtn" href="<?php echo wp_logout_url( home_url() ); ?>">
+				<a class="kb-button kt-button button kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-inherit kt-btn-has-text-true kt-btn-has-svg-false wp-block-button__link wp-block-kadence-singlebtn" href="<?php echo esc_url( wp_logout_url( home_url() ) ); ?>">
                     <span class="kt-btn-inner-text">User logged in. Click to log out.</span>
                 </a>
             </div>
@@ -34,8 +33,8 @@ function shortcode_forstuff() {
     <?php else : ?>
         <div class="kt-inside-inner-col">
             <div class="wp-block-kadence-advancedbtn kb-buttons-wrap">
-            <a class="kb-button kt-button button kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-false wp-block-kadence-singlebtn" href="<?php echo esc_url( wp_login_url( get_permalink() ) ); ?>" alt="<?php esc_attr_e( 'Log into FFLAssist to read content.', 'fflassist' ); ?>">
-            <?php _e( 'Log into FFLAssist to read content.', 'fflassist' ); ?></a>
+            <a class="kb-button kt-button button kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-false wp-block-kadence-singlebtn" href="<?php echo esc_url( wp_login_url( get_permalink() ) ); ?>" alt="<?php esc_attr_e( 'Log into FFLAssist to read content.', 'fflassist-core-functionality' ); ?>">
+			<?php echo esc_html__( 'Log into FFLAssist to read content.', 'fflassist-core-functionality' ); ?></a>
             </div>
         </div>
     <?php endif;?>
@@ -56,10 +55,6 @@ function shortcode_forstuff() {
  * collection: misc
  * category: localization
  *
- * You can add this recipe to your site by creating a custom plugin
- * or using the Code Snippets plugin available for free in the WordPress repository.
- * Read this companion article for step-by-step directions on either method.
- * https://www.paidmembershipspro.com/create-a-plugin-for-pmpro-customizations/
  */
 
 /**
@@ -98,14 +93,14 @@ function my_ngettext_membership( $output_text, $single, $plural, $number, $domai
 function my_pmpro_member_action_links( $links, $level_id ){
     if ( $level_id == 1 ) {
         //Add an upgrade link
-            $links['upgrade'] = '<a id="pmpro_actionlink-upgrade" href="' . esc_url( add_query_arg( 'pmpro_level', 3, pmpro_url('checkout' ) ) ) . '">' . esc_html__( 'Upgrade to Annual', 'fflassist' ) . '</a>';
+            $links['upgrade'] = '<a id="pmpro_actionlink-upgrade" href="' . esc_url( add_query_arg( 'pmpro_level', 3, pmpro_url('checkout' ) ) ) . '">' . esc_html__( 'Upgrade to Annual', 'fflassist-core-functionality' ) . '</a>';
     }
     // if ( $level_id == 1 || $level_id == 2 ) {
-    // $links['bonuses'] = '<a id="pmpro_actionlink-bonuses" href="/bonuses">' . esc_html__( 'View Your Exclusive Bonuses', 'fflassist') . '</a>';
+    // $links['bonuses'] = '<a id="pmpro_actionlink-bonuses" href="/bonuses">' . esc_html__( 'View Your Exclusive Bonuses', 'fflassist-core-functionality') . '</a>';
     // }
     if ( $level_id == 1 || $level_id == 2 || $level_id == 3 ) {
-        $links['nextsteps'] = '<a id="pmpro_actionlink-nextsteps" href="/assist-content/public-blog/">' . esc_html__( 'Next Steps', 'fflassist') . '</a>';
-        $links['fflassist-logon'] = '<a id="pmpro_actionlink-fflassist-logon" href="/assist-content/fflassist-splash/">' . esc_html__( 'Logon to FFLAssist', 'fflassist') . '</a>';
+        $links['nextsteps'] = '<a id="pmpro_actionlink-nextsteps" href="/assist-content/public-blog/">' . esc_html__( 'Next Steps', 'fflassist-core-functionality') . '</a>';
+        $links['fflassist-logon'] = '<a id="pmpro_actionlink-fflassist-logon" href="/assist-content/fflassist-splash/">' . esc_html__( 'Logon to FFLAssist', 'fflassist-core-functionality') . '</a>';
     }
     return $links;    
     }

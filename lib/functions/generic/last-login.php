@@ -15,8 +15,6 @@
  * @copyright    Copyright (c) 2024, Matt Ryan
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-// namespace capweb;
-
 
 //Record user's last login to custom meta
 add_action( 'wp_login','capture_login_time', 10, 2 );
@@ -36,11 +34,11 @@ function user_last_login_column( $columns ) {
 
 function last_login_column( $output, $column_id, $user_id ){
 	if( $column_id == 'last_login' ) {
-    $last_login = get_user_meta( $user_id, 'last_login', true );
-    $date_format = 'M j, Y';
-    $hover_date_format = 'F j, Y, g:i a';
-    
-		$output = $last_login ? '<div title="Last login: '.date( $hover_date_format, $last_login ).'">'.human_time_diff( $last_login ).'</div>' : 'No record';
+	$last_login = get_user_meta( $user_id, 'last_login', true );
+	$date_format = 'M j, Y';
+	$hover_date_format = 'F j, Y, g:i a';
+	
+		$output = $last_login ? '<div title="Last login: '.gmdate( $hover_date_format, $last_login ).'">'.human_time_diff( $last_login ).'</div>' : 'No record';
 	}
   
 	return $output;
@@ -58,28 +56,20 @@ function sortable_last_login_column( $columns ) {
 }
 
 function sort_last_login_column( $query ) {
-	if( !is_admin() ) {
-		return $query;
-	}
+	if( !is_admin() ) return $query;
  
-    /**
-     * Check whether the get_current_screen function exists
-     * because it is loaded only after 'admin_init' hook.
-     */
-    if ( function_exists( 'get_current_screen' ) ) {
-		$screen = get_current_screen();
+	/**
+	 * Check whether the get_current_screen function exists
+	 * because it is loaded only after 'admin_init' hook.
+	 */
+	if ( !function_exists( 'get_current_screen' ) ) return $query;
+
+	$screen = get_current_screen();
 	
-		if( isset( $screen->base ) && $screen->base !== 'users' ) {
-			return $query;
-		}
+	if( (isset( $screen->base ) && $screen->base !== 'users') || (isset( $_GET[ 'orderby' ] ) && $_GET[ 'orderby' ] != 'last_login') ) return $query;
 	
-		if( isset( $_GET[ 'orderby' ] ) && $_GET[ 'orderby' ] == 'last_login' ) {
-	
-			$query->query_vars['meta_key'] = 'last_login';
-			$query->query_vars['orderby'] = 'meta_value';
-	
-		}
-	}
+	$query->query_vars['meta_key'] = 'last_login';
+	$query->query_vars['orderby'] = 'meta_value';
  
   return $query;
 }

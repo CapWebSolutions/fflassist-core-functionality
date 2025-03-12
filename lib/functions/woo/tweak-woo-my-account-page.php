@@ -92,15 +92,15 @@ add_filter( 'woocommerce_account_menu_items','capweb_add_fflassist_portal_link_m
 // 4. Add content to the new tab. This function is also used to print button elsewhere on My Account. 
 
 function capweb_fflassist_portal_content() {
-   $url = rwmb_meta( 'bc_logon_url', [ 'object_type' => 'user' ], get_current_user_id() );
-   if ( empty( $url ) ) {
-      $url = home_url( '/contact?logon-url-not-set' );
-   }
-   ?>
-   <a class="button kb-btn-global-inherit" href="<?php echo $url;?>" target='_blank' rel="noopener noreferrer">Access FFLAssist Portal Here</a>
-   <?php
+  $url = rwmb_meta( 'bc_logon_url', [ 'object_type' => 'user' ], get_current_user_id() );
+  if ( empty( $url ) ) {
+    $url = home_url( '/contact?logon-url-not-set' );
+  }
+  ?>
+  <a class="button kb-btn-global-inherit" href="<?php echo esc_url( $url ); ?>" target='_blank' rel="noopener noreferrer"><?php esc_html_e( 'Access FFLAssist Portal Here', 'fflassist-core-functionality' ); ?></a>
+  <?php
 }
-add_action( 'woocommerce_account_fflassist-portal_endpoint','capweb_fflassist_portal_content' );
+add_action( 'woocommerce_account_fflassist-portal_endpoint', 'capweb_fflassist_portal_content' );
 
 /**
 * @snippet       Reorder tabs @ My Account
@@ -114,13 +114,13 @@ add_filter( 'woocommerce_account_menu_items', 'capweb_add_link_my_account' );
 
 function capweb_add_link_my_account( $items ) {
    $newitems = array(
-     'dashboard' => __( 'Dashboard', 'woocommerce' ),
-     'edit-account' => __( 'Account details', 'woocommerce' ),
-     'orders' => __( 'Order History', 'woocommerce' ),
-     'subscriptions' => __( 'Subscriptions', 'woocommerce' ),
-     'payment-methods' => __( 'Payment Methods', 'woocommerce' ),
-     'fflassist-portal' => __( 'FFLAssist Portal', 'woocommerce' ),
-     'customer-logout' => __( 'Logout', 'woocommerce' )
+     'dashboard' => __( 'Dashboard', 'fflassist-core-functionality' ),
+     'edit-account' => __( 'Account details', 'fflassist-core-functionality' ),
+     'orders' => __( 'Order History', 'fflassist-core-functionality' ),
+     'subscriptions' => __( 'Subscriptions', 'fflassist-core-functionality' ),
+     'payment-methods' => __( 'Payment Methods', 'fflassist-core-functionality' ),
+     'fflassist-portal' => __( 'FFLAssist Portal', 'fflassist-core-functionality' ),
+     'customer-logout' => __( 'Logout', 'fflassist-core-functionality' )
    ); 
    return $newitems;
 }
