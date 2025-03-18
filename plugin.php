@@ -3,7 +3,7 @@
  * Plugin Name: FFLAssist Core Functionality
  * Plugin URI: https://github.com/CapWebSolutions/fflassist-core-functionality
  * Description: This contains core functionality for FFLAssist so that it is theme independent. It should remain activated.
- * Version: 2.0.1
+ * Version: 2.0.2
  * Author: Cap Web Solutions
  * Author URI: https://capwebsolutions.com
  * GitHub Plugin URI: https://github.com/CapWebSolutions/fflassist-core-functionality
@@ -69,7 +69,7 @@ function include_core_functionality_inc_files() {
 		'lib/functions/generic/',
 		'lib/functions/gravity/',
 		'lib/functions/pmpro/',
-		'lib/functions/woo',
+		'lib/functions/woo/',
 		'lib/metabox-io-example.php', // TGMPA library and related for Metabox.io
 	];
 
