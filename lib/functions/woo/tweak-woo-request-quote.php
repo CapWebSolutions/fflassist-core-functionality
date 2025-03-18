@@ -12,34 +12,34 @@
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-// namespace capweb;
 
-add_action( 'woocommerce_after_add_to_cart_form','fflassist_woocommerce_gf_single_product', 30 );
+ add_action( 'woocommerce_after_add_to_cart_form','fflassist_woocommerce_gf_single_product', 30 );
+ function fflassist_woocommerce_gf_single_product() {
+    global $product;
+    $products_ids = array( 21274 ); // Update this array with IDs of quote products
+    if ( is_product()  && $product->get_id() == in_array( $product->get_id(), $products_ids ) ) {
+       echo '<button type="submit" id="trigger_gf" class="single_add_to_cart_button button alt">Request a Quote</button>';
+       echo '<div id="product_inq" style="display:none">';
+       echo do_shortcode('[gravityform id="5" title="true"]');
+       echo '</div>';
 
-function fflassist_woocommerce_gf_single_product() {
-   global $product;
-   $products_ids = array( 21274 ); // Update this array with IDs of quote products
-   if (is_product() && $product->get_id() == in_array( $product->get_id(), $products_ids ) ) {
+       // Enque JS for form display toggle. 
+       wc_enqueue_js( "
+          $('#trigger_gf').on('click', function(){
+             if ( $(this).text() == 'Request a Quote' ) {
+                $('#product_inq').css('display','block');
+                $('input[name=\'your-subject\']').val('" . get_the_title() . "');
+                $('#trigger_gf').html('Close');
+             } else {
+                $('#product_inq').hide();
+                $('#trigger_gf').html('Request a Quote');
+             }
+          });
+       " );
 
-      echo '<button type="submit" id="trigger_gf" class="single_add_to_cart_button button alt">Request a Quote</button>';
-      echo '<div id="product_inq" style="display:none">';
-      echo do_shortcode('[gravityform id="5" title="true"]');
-      echo '</div>';
-      wc_enqueue_js( "
-         $('#trigger_gf').on('click', function(){
-            if ( $(this).text() == 'Request a Quote' ) {
-               $('#product_inq').css('display','block');
-               $('input[name=\'your-subject\']').val('" . get_the_title() . "');
-               $('#trigger_gf').html('Close');
-            } else {
-               $('#product_inq').hide();
-               $('#trigger_gf').html('Request a Quote');
-            }
-         });
-      " );
+     }
    }
-}
-
+   
 function remove_add_to_cart_button() {
    global $product;
    $products_ids = array( 21274 ); // Update this array with IDs of quote products
