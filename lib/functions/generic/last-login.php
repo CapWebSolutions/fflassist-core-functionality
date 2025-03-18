@@ -64,12 +64,13 @@ function sort_last_login_column( $query ) {
 	 */
 	if ( !function_exists( 'get_current_screen' ) ) return $query;
 
+	if ( ( !isset( $_GET['orderby'] ) || $_GET['orderby'] !== 'last_login' ) ) return $query;
+
 	$screen = get_current_screen();
+	if ( isset( $screen->base ) && $screen->base !== 'users' ) return $query;
 	
-	if( (isset( $screen->base ) && $screen->base !== 'users') || (isset( $_GET[ 'orderby' ] ) && $_GET[ 'orderby' ] != 'last_login') ) return $query;
-	
-	$query->query_vars['meta_key'] = 'last_login';
-	$query->query_vars['orderby'] = 'meta_value';
+	$query->set( 'meta_key', 'last_login' );
+	$query->set( 'orderby', 'meta_value' );
  
   return $query;
 }
