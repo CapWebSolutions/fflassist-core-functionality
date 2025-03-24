@@ -17,8 +17,6 @@
  * @link       https://github.com/TGMPA/TGM-Plugin-Activation
  */
  
-// namespace capweb;
-
 /**
  * Include the TGM_Plugin_Activation class.
  *

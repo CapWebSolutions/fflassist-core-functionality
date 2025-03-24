@@ -8,7 +8,6 @@
  * @since        1.0.0
  * @link
  */
-// namespace capweb;
 
 /**
  * Filter the header of the restricted message shown on protected content.

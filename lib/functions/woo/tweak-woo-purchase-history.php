@@ -12,8 +12,6 @@
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-// namespace capweb;
-
 /**
  * @snippet       Purchase History Tab | WooCommerce My Account
  * @tutorial      Get CustomizeWoo.com FREE

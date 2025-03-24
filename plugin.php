@@ -3,7 +3,7 @@
  * Plugin Name: FFLAssist Core Functionality
  * Plugin URI: https://github.com/CapWebSolutions/fflassist-core-functionality
  * Description: This contains core functionality for FFLAssist so that it is theme independent. It should remain activated.
- * Version: 2.0.3
+ * Version: 2.0.4
  * Author: Cap Web Solutions
  * Author URI: https://capwebsolutions.com
  * GitHub Plugin URI: https://github.com/CapWebSolutions/fflassist-core-functionality
@@ -18,8 +18,6 @@
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  */
-
-// namespace capweb;
 
 // Define needed constants
 define( 'CORE_FUNCTIONALITY_PLUGIN_DIR', plugin_dir_path( __FILE__ ) ); //location of plugin folder on disk

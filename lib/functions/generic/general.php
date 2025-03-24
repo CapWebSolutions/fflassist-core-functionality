@@ -11,9 +11,8 @@
  * @copyright    Copyright (c) 2024, Matt Ryan
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-// namespace capweb;
 
-/**	
+ /**	
  * Redirect non-admin users to home page on logout. 
  */
 function logout_redirect( $redirect_to, $requested_redirect, $user ) {

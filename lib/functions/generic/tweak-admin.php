@@ -11,7 +11,6 @@
  * @copyright    Copyright (c) 2024, Matt Ryan
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-// namespace capweb;
 
 /* ********************** Contents **********************
   01. Change color of admin bar if using dev or staging site

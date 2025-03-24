@@ -12,8 +12,6 @@
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-// namespace capweb;
-
 function rd_duplicate_post_as_draft(){
 	global $wpdb;
 	if (! ( isset( $_GET['post']) || isset( $_POST['post'])  || ( isset($_REQUEST['action']) && 'rd_duplicate_post_as_draft' == $_REQUEST['action'] ) ) ) {

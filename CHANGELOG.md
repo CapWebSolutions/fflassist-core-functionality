@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.4] - 2025-03-24
+
+### Removed
+
+- Bits of commented out debug code. 
+
+### Changed
+
+- Adjusted the way the user meta boxes are displayed on USer Profile page. Allows for generated URL to be displayed in admin. 
+
+### Added
+
+- Toggle on User Profile page to turn on/off display of user shipping and billing addresses. 
+
 ## [2.0.3] - 2025-03-18
 
 ### Changed

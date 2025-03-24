@@ -12,7 +12,6 @@
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-//  // namespace capweb;
 
 /**
  * @snippet       Add Custom Field @ WooCommerce Checkout Page
