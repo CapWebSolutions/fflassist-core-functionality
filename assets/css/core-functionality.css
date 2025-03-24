@@ -19,3 +19,15 @@ Selects the first paragraph by using the '>' for specificity.  */
 	color: rgb(13,242,50);
 }
 /* End: PMPRo login/out on main nav heading */
+
+
+/* Hide the customer billing and shipping address fields on the User profile page */
+#customer_billing_address_wrapper,
+#customer_shipping_address_wrapper {
+    transition: opacity 0.3s ease;
+}
+
+.hidden {
+    opacity: 0;
+}
+/* END: Hide the customer billing and shipping address fields on the User profile page */
