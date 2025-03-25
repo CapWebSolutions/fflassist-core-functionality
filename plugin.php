@@ -3,7 +3,7 @@
  * Plugin Name: FFLAssist Core Functionality
  * Plugin URI: https://github.com/CapWebSolutions/fflassist-core-functionality
  * Description: This contains core functionality for FFLAssist so that it is theme independent. It should remain activated.
- * Version: 2.0.4
+ * Version: 2.0.5
  * Author: Cap Web Solutions
  * Author URI: https://capwebsolutions.com
  * GitHub Plugin URI: https://github.com/CapWebSolutions/fflassist-core-functionality
@@ -24,6 +24,7 @@ define( 'CORE_FUNCTIONALITY_PLUGIN_DIR', plugin_dir_path( __FILE__ ) ); //locati
 define( 'CORE_FUNCTIONALITY_PLUGIN_URI', plugin_dir_url( __FILE__ ) );  //location of plugin folder in wp-content
 define( 'CORE_FUNCTIONALITY_THEME_DIR', get_stylesheet_directory() );   // Used in checking location of logo file
 define( 'CORE_FUNCTIONALITY_THEME_URI', get_stylesheet_directory_uri() );   // Used in checking location of logo file
+define( 'FFL_LICENSE_PLACEHOLDER', '9-99-999-99-99-99999' );   // Used in various locations to display license placeholder
 
 add_action( 'after_setup_theme','core_setup' );
 function core_setup() {
