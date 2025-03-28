@@ -6,6 +6,7 @@
 Selects the first paragraph by using the '>' for specificity.  */
 .pmpro-no-access .entry-content > p {
 	-webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, .5));
+    mask-image: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, .5)); /* Standard property for compatibility */
 }
 
 
