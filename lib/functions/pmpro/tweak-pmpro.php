@@ -229,7 +229,7 @@ function my_pmpro_login_redirect_url( $redirect_to, $request, $user ) {
 		error_log( 'Running lo redirect ' . var_export( $user_id, true ) );
 		// Redirect users with membership level 1 to /level-1 page
 		if ( pmpro_hasMembershipLevel( 1, $user_id ) ) {
-			wp_redirect( '/my-account' );
+			wp_redirect( '/assist-shop/my-account' );
 			exit;
 		} else {
 			// Redirect non-members and members with other levels to /other-levels page.
