@@ -103,7 +103,10 @@ function capweb_fflassist_portal_content() {
   }
 
 }
-add_action( 'woocommerce_account_fflassist-portal_endpoint', 'capweb_fflassist_portal_content' );
+// This action adds the ACCESS FFLASSIST PORTAL HERE cta to the "/assist-shop/my-account/fflassist-portal/" page.
+//    It is the page that is displayed when the user clicks on the FFLAssist Portal link in the My Account menu.
+//    
+// add_action( 'woocommerce_account_fflassist-portal_endpoint', 'capweb_fflassist_portal_content' );
 
 /**
 * @snippet       Reorder tabs @ My Account
@@ -122,7 +125,6 @@ function capweb_add_link_my_account( $items ) {
      'orders' => __( 'Order History', 'fflassist-core-functionality' ),
      'subscriptions' => __( 'Subscriptions', 'fflassist-core-functionality' ),
      'payment-methods' => __( 'Payment Methods', 'fflassist-core-functionality' ),
-     'fflassist-portal' => __( 'FFLAssist Portal', 'fflassist-core-functionality' ),
      'customer-logout' => __( 'Logout', 'fflassist-core-functionality' )
    ); 
    return $newitems;

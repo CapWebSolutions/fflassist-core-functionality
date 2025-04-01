@@ -187,25 +187,7 @@ function save_license_no_to_user_meta($order_id) {
     foreach ( WC()->cart->get_cart() as $cart_item ) {
        foreach ( $topopulate as $urlparam => $checkout_field ) {
           if ( isset( $cart_item[$checkout_field] ) && ! empty( $cart_item[$checkout_field] ) ) {
-            //  switch ( substr( $checkout_field, 0, 7 ) ) {
-            //     case 'billing':
-            //        $fields['billing'][$checkout_field]['default'] = $cart_item[$checkout_field];
-            //        break;
-            //     case 'shippin':
-            //        $fields['shipping'][$checkout_field]['default'] = $cart_item[$checkout_field];
-            //        break;
-            //  }
-            error_log( print_r( (object)
-               [
-                  'file' => __FILE__,
-                  'method' => __METHOD__,
-                  'line' => __LINE__,
-                  'dump' => [
-                     $cart_item,
-                     $checkout_field,
-                     $cart_item[$checkout_field],
-                  ],
-               ], true ) );
+
           }
            
          }

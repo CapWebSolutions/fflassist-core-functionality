@@ -95,11 +95,11 @@ function capweb_create_user_meta_fields( $meta_boxes ) {
             [
                 'name'              => __( 'BC Logon Url', 'fflassist-core-functionality' ),
                 'id'                => $prefix . 'bc_logon_url',
-                'type'              => 'url',
+                'type'              => 'text',
                 'desc' 				=> __( 'Generated Business Central access URL. <a href="#submit">Update Profile</a> to view URL.', 'fflassist-core-functionality' ),
 				'size'              => 100,
 				'placeholder'       => __( $bc_logon_url_place, 'fflassist-core-functionality' ),
-				// 'std'       => __( 'https://businesscentral.dynamics.com/'.['bc_tenant_id'].'/' . rwmb_the_value( 'bc_database', [ 'object_type' => 'user' ], get_current_user_id() ), 'fflassist-core-functionality' ),
+				// 'std'       => __( 'https://businesscentral.dynamics.com/'. rwmb_the_value( 'bc_tennant_id', [ 'object_type' => 'user' ], get_current_user_id() ) .'/' . rwmb_the_value( 'bc_database', [ 'object_type' => 'user' ], get_current_user_id() ), 'fflassist-core-functionality' ),
                 'required'          => false,
                 'disabled'          => false,
                 'readonly'          => true,
@@ -132,3 +132,20 @@ function capweb_create_user_meta_fields( $meta_boxes ) {
 
     return $meta_boxes;
 }
+
+
+function capweb_update_user_bc_meta() {
+    $user_id = get_current_user_id();
+    $bc_meta = get_ffl_assist_custom_bc_meta( $user_id, [] );
+    $bc_logon_url  = 'https://businesscentral.dynamics.com/'. rwmb_the_value( 'bc_tennant_id', [ 'object_type' => 'user' ], get_current_user_id() ) .'/' . rwmb_the_value( 'bc_database', [ 'object_type' => 'user' ], get_current_user_id() );
+    if ( !empty( $bc_meta ) ) {
+        $updated = update_user_meta( $user_id, 'bc_logon_url', $bc_logon_url );
+        // Check and make sure the stored value matches $new_value.
+        if ( $bc_logon_url != get_user_meta( $user_id,  'bc_logon_url', true ) ) {
+            wp_die( __( 'An error occurred updating the BC_LOGON_URL.', 'fflassist-core-functionality' ) );
+        }
+    }
+    return;
+
+}
+// add_action('wp_update_user', 'capweb_update_user_bc_meta' );
