@@ -53,5 +53,5 @@ function add_toggle_to_customer_addresses() {
     }
 }
 if (isset($_SERVER['SCRIPT_NAME']) && basename($_SERVER['SCRIPT_NAME']) === 'profile.php') {
-    add_action('admin_footer', 'add_toggle_to_customer_addresses');
+    // add_action('admin_footer', 'add_toggle_to_customer_addresses');
 }
