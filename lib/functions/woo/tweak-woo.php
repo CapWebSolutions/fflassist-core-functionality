@@ -153,8 +153,30 @@ function cws_set_free_trial_product_price($cart) {
     }
 
     foreach ($cart->get_cart() as $cart_item) {
-        if ($cart_item['product_id'] == 24666) { // 24666 is the Demo product
+        if ($cart_item['product_id'] == 24666) { // 24666 is the Demo Subscription product
             $cart_item['data']->set_price(0);
         }
     }
 }
+
+
+
+/**
+ * @snippet       Hide Products Without Featured Image @ WooCommerce Shop
+ * @tutorial      https://businessbloomer.com/woocommerce-customization
+ * @author        Rodolfo Melogli, Business Bloomer
+ * @compatible    WooCommerce 9
+ * @community     https://businessbloomer.com/club/
+ */
+ 
+ add_action( 'woocommerce_product_query', 'bbloomer_hide_products_no_feat_image' );
+ 
+ function bbloomer_hide_products_no_feat_image( $query ) {
+     $meta_query = $query->get( 'meta_query' );
+     $meta_query[] = [
+         'key' => '_thumbnail_id',
+         'compare' => 'EXISTS',
+     ];
+     $query->set( 'meta_query', $meta_query );
+ }
+ 
